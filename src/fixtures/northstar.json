@@ -1,0 +1,5632 @@
+{
+  "schemaVersion": "1.0.0",
+  "graphVersion": "0.1.0",
+  "policyVersion": "0.1.0",
+  "analysisDate": "2026-10-06",
+  "completeness": {
+    "capabilityInventory": "complete",
+    "controlImplementation": "complete",
+    "evidenceInventory": "complete"
+  },
+  "entities": [
+    {
+      "id": "ORG-PROC",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "OrgUnit",
+      "name": "Procurement"
+    },
+    {
+      "id": "ORG-AP",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "OrgUnit",
+      "name": "Accounts Payable"
+    },
+    {
+      "id": "ORG-TREASURY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "OrgUnit",
+      "name": "Treasury"
+    },
+    {
+      "id": "ORG-SEC",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "OrgUnit",
+      "name": "Security"
+    },
+    {
+      "id": "ROLE-INTAKE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Supplier request intake",
+      "responsibilities": [
+        "Receive supplier registration and change requests"
+      ]
+    },
+    {
+      "id": "ROLE-SUPPLIER-MAINTAINER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Supplier maintainer",
+      "responsibilities": [
+        "Prepare and commit supplier-master versions"
+      ]
+    },
+    {
+      "id": "ROLE-BENEFICIARY-VERIFIER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Beneficiary verifier",
+      "responsibilities": [
+        "Independently verify bank details against a trusted source"
+      ]
+    },
+    {
+      "id": "ROLE-ONBOARDING-CLEARER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Onboarding clearer",
+      "responsibilities": [
+        "Accept or hold supplier profiles"
+      ]
+    },
+    {
+      "id": "ROLE-INVOICE-CLERK",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Invoice clerk",
+      "responsibilities": [
+        "Extract, match and escalate invoice exceptions"
+      ]
+    },
+    {
+      "id": "ROLE-PAYMENT-PREPARER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Payment preparer",
+      "responsibilities": [
+        "Prepare, submit, retry and reconcile payments"
+      ]
+    },
+    {
+      "id": "ROLE-PAYMENT-APPROVER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Payment approver",
+      "responsibilities": [
+        "Authorize the exact payment fingerprint"
+      ]
+    },
+    {
+      "id": "ROLE-AUTOMATION-AGENT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "Automation agent",
+      "responsibilities": [
+        "Bounded service acting under an explicit activity contract"
+      ]
+    },
+    {
+      "id": "ROLE-SUPPLIER-EXTERNAL",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Role",
+      "name": "External supplier",
+      "responsibilities": [
+        "Submit registration or change requests"
+      ]
+    },
+    {
+      "id": "P-PROC",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Procurement intake officer",
+      "principalKind": "human",
+      "effectiveIdentityId": "ID-P-PROC",
+      "independenceGroup": "G-PROC",
+      "roleIds": [
+        "ROLE-INTAKE"
+      ],
+      "orgUnitId": "ORG-PROC"
+    },
+    {
+      "id": "P-MAINT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Supplier maintenance clerk",
+      "principalKind": "human",
+      "effectiveIdentityId": "ID-P-MAINT",
+      "independenceGroup": "G-MAINT",
+      "roleIds": [
+        "ROLE-SUPPLIER-MAINTAINER"
+      ],
+      "orgUnitId": "ORG-AP"
+    },
+    {
+      "id": "P-VERIFIER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Beneficiary verifier",
+      "principalKind": "human",
+      "effectiveIdentityId": "ID-P-VERIFIER",
+      "independenceGroup": "G-VERIFY",
+      "roleIds": [
+        "ROLE-BENEFICIARY-VERIFIER"
+      ],
+      "orgUnitId": "ORG-TREASURY"
+    },
+    {
+      "id": "P-CLEARER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Onboarding clearer",
+      "principalKind": "human",
+      "effectiveIdentityId": "ID-P-CLEARER",
+      "independenceGroup": "G-CLEAR",
+      "roleIds": [
+        "ROLE-ONBOARDING-CLEARER"
+      ],
+      "orgUnitId": "ORG-SEC"
+    },
+    {
+      "id": "P-AP-CLERK",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Invoice clerk",
+      "principalKind": "human",
+      "effectiveIdentityId": "ID-P-AP-CLERK",
+      "independenceGroup": "G-APCLERK",
+      "roleIds": [
+        "ROLE-INVOICE-CLERK"
+      ],
+      "orgUnitId": "ORG-AP"
+    },
+    {
+      "id": "P-PAYOPS",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Payment preparer / submitter",
+      "principalKind": "human",
+      "effectiveIdentityId": "ID-P-PAYOPS",
+      "independenceGroup": "G-PAYOPS",
+      "roleIds": [
+        "ROLE-PAYMENT-PREPARER"
+      ],
+      "orgUnitId": "ORG-AP"
+    },
+    {
+      "id": "P-APPROVER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Payment approver",
+      "principalKind": "human",
+      "effectiveIdentityId": "ID-P-APPROVER",
+      "independenceGroup": "G-APPROVE",
+      "roleIds": [
+        "ROLE-PAYMENT-APPROVER"
+      ],
+      "orgUnitId": "ORG-TREASURY"
+    },
+    {
+      "id": "SVC-EXTRACT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "A1 invoice-extraction agent",
+      "principalKind": "service",
+      "effectiveIdentityId": "ID-SVC-EXTRACT",
+      "independenceGroup": "G-SVC-EXTRACT",
+      "roleIds": [
+        "ROLE-AUTOMATION-AGENT"
+      ],
+      "orgUnitId": "ORG-AP"
+    },
+    {
+      "id": "SVC-SUPPLIER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "A2 supplier-maintenance agent",
+      "principalKind": "service",
+      "effectiveIdentityId": "ID-SVC-SUPPLIER",
+      "independenceGroup": "G-SVC-SUPPLIER",
+      "roleIds": [
+        "ROLE-AUTOMATION-AGENT"
+      ],
+      "orgUnitId": "ORG-AP"
+    },
+    {
+      "id": "SVC-PAYMENT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "A3 payment agent",
+      "principalKind": "service",
+      "effectiveIdentityId": "ID-SVC-PAYMENT",
+      "independenceGroup": "G-SVC-PAYMENT",
+      "roleIds": [
+        "ROLE-AUTOMATION-AGENT"
+      ],
+      "orgUnitId": "ORG-AP"
+    },
+    {
+      "id": "EXT-SUPPLIER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "Principal",
+      "name": "Supplier (external requester)",
+      "principalKind": "external",
+      "effectiveIdentityId": "ID-EXT-SUPPLIER",
+      "independenceGroup": "G-EXT",
+      "roleIds": [
+        "ROLE-SUPPLIER-EXTERNAL"
+      ]
+    },
+    {
+      "id": "SYS-INBOX",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Supplier inbox",
+      "boundary": "internal",
+      "approvedPurposes": [
+        "supplier-onboarding",
+        "supplier-maintenance"
+      ],
+      "acceptedCategories": [
+        "bank",
+        "tax"
+      ]
+    },
+    {
+      "id": "SYS-MASTER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Supplier master",
+      "boundary": "internal",
+      "approvedPurposes": [
+        "supplier-maintenance",
+        "payment-execution",
+        "onboarding-review"
+      ],
+      "acceptedCategories": [
+        "bank",
+        "tax"
+      ]
+    },
+    {
+      "id": "SYS-INVOICE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Invoice records",
+      "boundary": "internal",
+      "approvedPurposes": [
+        "invoice-processing",
+        "invoice-extraction"
+      ],
+      "acceptedCategories": [
+        "bank",
+        "tax"
+      ]
+    },
+    {
+      "id": "SYS-MATCHER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Purchase-order / receipt matcher",
+      "boundary": "internal",
+      "approvedPurposes": [
+        "invoice-processing"
+      ],
+      "acceptedCategories": []
+    },
+    {
+      "id": "SYS-APPROVAL",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Approval service",
+      "boundary": "internal",
+      "approvedPurposes": [
+        "payment-preparation",
+        "payment-authorization",
+        "exception-handling"
+      ],
+      "acceptedCategories": [
+        "bank"
+      ]
+    },
+    {
+      "id": "SYS-GATEWAY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Mock bank gateway",
+      "boundary": "external",
+      "approvedPurposes": [
+        "payment-execution",
+        "payment-reconciliation"
+      ],
+      "acceptedCategories": [
+        "bank"
+      ],
+      "approvedFields": [
+        "paymentId",
+        "supplierId",
+        "bankVersion",
+        "accountDigest",
+        "amountCents",
+        "currency",
+        "obligationId",
+        "invoiceId"
+      ]
+    },
+    {
+      "id": "SYS-DIRECTORY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Trusted contact directory (read-only)",
+      "boundary": "internal",
+      "approvedPurposes": [
+        "beneficiary-verification"
+      ],
+      "acceptedCategories": [
+        "bank"
+      ]
+    },
+    {
+      "id": "SYS-EXTRACTOR",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2",
+      "evidenceStatus": "fixture",
+      "kind": "System",
+      "name": "Invoice extraction service",
+      "boundary": "internal",
+      "approvedPurposes": [
+        "invoice-extraction"
+      ],
+      "acceptedCategories": [
+        "bank",
+        "tax"
+      ]
+    },
+    {
+      "id": "W01",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W01",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Receive supplier registration or change request",
+      "workflowId": "supplier-management",
+      "lane": "supplier",
+      "ownerOrgUnitId": "ORG-PROC",
+      "conditional": false,
+      "summary": "Create supplier-submitted claims; never verified facts."
+    },
+    {
+      "id": "W02",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W02",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Prepare supplier-master draft",
+      "workflowId": "supplier-management",
+      "lane": "supplier",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": false,
+      "summary": "Preserve claimed bank details and their source/version."
+    },
+    {
+      "id": "W03",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W03",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Independently verify beneficiary before commit",
+      "workflowId": "supplier-management",
+      "lane": "supplier",
+      "ownerOrgUnitId": "ORG-TREASURY",
+      "conditional": false,
+      "summary": "Issue evidence for the exact supplier and bank version on trusted-source validation."
+    },
+    {
+      "id": "W04",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W04",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Commit supplier-master version",
+      "workflowId": "supplier-management",
+      "lane": "supplier",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": false,
+      "summary": "Install a new immutable version; old evidence never transfers."
+    },
+    {
+      "id": "W05",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W05",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Accept or hold supplier profile",
+      "workflowId": "supplier-management",
+      "lane": "supplier",
+      "ownerOrgUnitId": "ORG-SEC",
+      "conditional": true,
+      "summary": "Record onboarding clearance independently of bank verification."
+    },
+    {
+      "id": "W06",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W06",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Receive and extract invoice",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": false,
+      "summary": "Structured fields with field-level lineage and restrictions."
+    },
+    {
+      "id": "W07",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W07",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Match invoice to order and receipt",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": false,
+      "summary": "Match result for the exact invoice version."
+    },
+    {
+      "id": "W08",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W08",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Prepare payment request",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": false,
+      "summary": "Snapshot supplier, invoice, bank version, digest, amount, currency."
+    },
+    {
+      "id": "W09",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W09",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Check beneficiary evidence before release",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-TREASURY",
+      "conditional": true,
+      "summary": "Retain valid evidence or obtain independent verification when missing."
+    },
+    {
+      "id": "W10",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W10",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Authorize payment request",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-TREASURY",
+      "conditional": false,
+      "summary": "Approval for the exact payment fingerprint; not beneficiary verification."
+    },
+    {
+      "id": "W11",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W11",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Submit payment through mock gateway",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": false,
+      "summary": "Record the actual payload and executing principal."
+    },
+    {
+      "id": "W12",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W12",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Reconcile bank acknowledgement",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": false,
+      "summary": "Complete a successfully paid case."
+    },
+    {
+      "id": "W13",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W13",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Hold or reject an exception",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": true,
+      "summary": "Explicit reason and disposition, not an unexplained dead end."
+    },
+    {
+      "id": "W14",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W14",
+      "evidenceStatus": "fixture",
+      "kind": "Activity",
+      "name": "Retry an uncertain submission",
+      "workflowId": "invoice-to-payment",
+      "lane": "invoice",
+      "ownerOrgUnitId": "ORG-AP",
+      "conditional": true,
+      "summary": "At most one retry with the same idempotency key."
+    },
+    {
+      "id": "AST-CLAIM",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §3.1",
+      "evidenceStatus": "fixture",
+      "kind": "Asset",
+      "name": "Supplier claim",
+      "assetKind": "supplierClaim",
+      "description": "Untrusted supplier-submitted claim (unverified)."
+    },
+    {
+      "id": "AST-MASTER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §3.1",
+      "evidenceStatus": "fixture",
+      "kind": "Asset",
+      "name": "Supplier master",
+      "assetKind": "supplierMaster",
+      "description": "Versioned supplier master record with bank details and editor."
+    },
+    {
+      "id": "AST-INVOICE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §3.1",
+      "evidenceStatus": "fixture",
+      "kind": "Asset",
+      "name": "Invoice",
+      "assetKind": "invoice",
+      "description": "Invoice document and extracted structured fields with lineage."
+    },
+    {
+      "id": "AST-MATCH",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §3.1",
+      "evidenceStatus": "fixture",
+      "kind": "Asset",
+      "name": "Order/receipt match",
+      "assetKind": "orderReceiptMatch",
+      "description": "Deterministic match result for the exact invoice version."
+    },
+    {
+      "id": "AST-PAYMENT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §3.1",
+      "evidenceStatus": "fixture",
+      "kind": "Asset",
+      "name": "Payment request",
+      "assetKind": "paymentRequest",
+      "description": "Snapshot of the exact payment tuple."
+    },
+    {
+      "id": "AST-RECEIPT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §3.1",
+      "evidenceStatus": "fixture",
+      "kind": "Asset",
+      "name": "Payment receipt",
+      "assetKind": "paymentReceipt",
+      "description": "Acknowledgement-backed reconciliation record."
+    },
+    {
+      "id": "EVD-BENEFICIARY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.3",
+      "evidenceStatus": "fixture",
+      "kind": "Evidence",
+      "name": "Beneficiary verification",
+      "evidenceKind": "beneficiaryVerification",
+      "subjectFields": [
+        "supplierId",
+        "bankVersion",
+        "accountDigest"
+      ],
+      "description": "Binds (supplierId, bankVersion, accountDigest)."
+    },
+    {
+      "id": "EVD-CLEARANCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.3",
+      "evidenceStatus": "fixture",
+      "kind": "Evidence",
+      "name": "Onboarding clearance",
+      "evidenceKind": "onboardingClearance",
+      "subjectFields": [
+        "supplierId"
+      ],
+      "description": "Supplier onboarding clearance, independent of bank verification."
+    },
+    {
+      "id": "EVD-APPROVAL",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.3",
+      "evidenceStatus": "fixture",
+      "kind": "Evidence",
+      "name": "Payment authorization",
+      "evidenceKind": "paymentAuthorization",
+      "subjectFields": [
+        "paymentId",
+        "paymentVersion",
+        "invoiceId",
+        "invoiceVersion",
+        "supplierId",
+        "bankVersion",
+        "accountDigest",
+        "amountCents",
+        "currency"
+      ],
+      "description": "Binds the full payment fingerprint; escalation is a flag on this evidence."
+    },
+    {
+      "id": "C1",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "kind": "Control",
+      "name": "Precommit beneficiary verification",
+      "mode": "guard",
+      "implemented": true,
+      "description": "W04 may commit only with valid independent beneficiary evidence for the draft bank version.",
+      "guard": {
+        "op": "evidence",
+        "name": "validBeneficiary",
+        "target": "draft"
+      }
+    },
+    {
+      "id": "C2",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "kind": "Control",
+      "name": "Conditional verification at the payment gateway",
+      "mode": "guard",
+      "implemented": true,
+      "description": "W11/W14 require valid beneficiary evidence for the exact payload; missing evidence routes to independent verification.",
+      "guard": {
+        "op": "evidence",
+        "name": "validBeneficiary",
+        "target": "payload"
+      },
+      "onBlock": [
+        {
+          "reason": "no valid independent beneficiary evidence for the exact payload",
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "gate.{activity}.blocked"
+              },
+              "value": {
+                "ref": "lit",
+                "value": true
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "done.W09"
+              },
+              "value": {
+                "ref": "lit",
+                "value": 0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "kind": "Control",
+      "name": "Payload / version / fingerprint binding",
+      "mode": "guard",
+      "implemented": true,
+      "description": "Reject stale snapshot, current-version or approval-fingerprint mismatches; route legitimate changes through one re-preparation and reauthorization.",
+      "guard": {
+        "op": "evidence",
+        "name": "payloadBound",
+        "target": "payload"
+      },
+      "onBlock": [
+        {
+          "when": {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "reprep.count"
+            },
+            "cmp": "lt",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          "reason": "payload/version/fingerprint mismatch: re-prepare and reauthorize",
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "done.W08"
+              },
+              "value": {
+                "ref": "lit",
+                "value": 0
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "done.W09"
+              },
+              "value": {
+                "ref": "lit",
+                "value": 0
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "done.W10"
+              },
+              "value": {
+                "ref": "lit",
+                "value": 0
+              }
+            },
+            {
+              "op": "incrementCounter",
+              "key": "reprep.count",
+              "by": 1
+            }
+          ]
+        },
+        {
+          "reason": "binding mismatch after the permitted re-preparation",
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.pending"
+              },
+              "value": {
+                "ref": "lit",
+                "value": true
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.reason"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "payment_binding_failed"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "kind": "Control",
+      "name": "Project restricted fields before external extraction",
+      "mode": "transform",
+      "implemented": true,
+      "description": "Only approved invoice fields leave the boundary; bank/tax and restricted-derived fields are projected away.",
+      "projectAwayUnacceptedCategories": true
+    },
+    {
+      "id": "C6",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "kind": "Control",
+      "name": "Settlement idempotency by obligation key",
+      "mode": "idempotent",
+      "implemented": true,
+      "description": "The gateway keys settlement by payment obligation; a retry of a settled obligation returns the prior receipt."
+    }
+  ],
+  "contracts": [
+    {
+      "id": "W01",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W01",
+      "evidenceStatus": "fixture",
+      "workflowId": "supplier-management",
+      "actorId": "P-PROC",
+      "operation": "copy",
+      "inputs": [],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-INBOX",
+          "operation": "read",
+          "resource": "supplierClaim"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "equals",
+            "left": {
+              "ref": "env",
+              "key": "supplierChange"
+            },
+            "right": {
+              "ref": "lit",
+              "value": true
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W01"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W11"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "receive",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "createAsset",
+              "kind": "supplierClaim",
+              "objectId": {
+                "ref": "env",
+                "key": "supplierId"
+              },
+              "version": {
+                "ref": "lit",
+                "value": 1
+              },
+              "status": "received",
+              "fields": [
+                {
+                  "name": "accountDigest",
+                  "value": {
+                    "ref": "env",
+                    "key": "claimDigest"
+                  },
+                  "lineage": [
+                    "supplier-claim"
+                  ],
+                  "categories": [
+                    "bank"
+                  ],
+                  "purposes": [
+                    "supplier-maintenance",
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "taxId",
+                  "value": {
+                    "ref": "env",
+                    "key": "claimTaxId"
+                  },
+                  "lineage": [
+                    "supplier-claim"
+                  ],
+                  "categories": [
+                    "tax"
+                  ],
+                  "purposes": [
+                    "supplier-maintenance"
+                  ]
+                },
+                {
+                  "name": "accountName",
+                  "value": {
+                    "ref": "env",
+                    "key": "claimName"
+                  },
+                  "lineage": [
+                    "supplier-claim"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "supplier-maintenance"
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "recordAction",
+              "operation": "receive",
+              "resource": "supplierClaim",
+              "fields": [
+                "accountDigest",
+                "taxId",
+                "accountName"
+              ],
+              "purpose": "supplier-onboarding"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W02",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W02",
+      "evidenceStatus": "fixture",
+      "workflowId": "supplier-management",
+      "actorId": "P-MAINT",
+      "operation": "propose",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "supplierClaim",
+            "select": "latest"
+          },
+          "role": "claim"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-INBOX",
+          "operation": "read",
+          "resource": "supplierClaim"
+        },
+        {
+          "system": "SYS-MASTER",
+          "operation": "write",
+          "resource": "supplierMaster"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W01"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W02"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "draft",
+          "nominal": true,
+          "minutes": 1,
+          "verification": false,
+          "effects": [
+            {
+              "op": "createAsset",
+              "kind": "supplierMaster",
+              "objectId": {
+                "ref": "env",
+                "key": "supplierId"
+              },
+              "version": {
+                "ref": "fact",
+                "key": "bank.next"
+              },
+              "status": "draft",
+              "fields": [
+                {
+                  "name": "supplierId",
+                  "value": {
+                    "ref": "env",
+                    "key": "supplierId"
+                  },
+                  "lineage": [
+                    "supplier-claim"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "supplier-maintenance",
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "accountDigest",
+                  "value": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierClaim",
+                      "select": "latest"
+                    },
+                    "name": "accountDigest"
+                  },
+                  "categories": [],
+                  "purposes": [
+                    "supplier-maintenance",
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "taxId",
+                  "value": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierClaim",
+                      "select": "latest"
+                    },
+                    "name": "taxId"
+                  },
+                  "categories": [],
+                  "purposes": [
+                    "supplier-maintenance"
+                  ]
+                },
+                {
+                  "name": "editor",
+                  "value": {
+                    "ref": "actor"
+                  },
+                  "lineage": [
+                    "editor"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "supplier-maintenance",
+                    "payment-execution"
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "draft.version"
+              },
+              "value": {
+                "ref": "fact",
+                "key": "bank.next"
+              }
+            },
+            {
+              "op": "incrementCounter",
+              "key": "bank.next",
+              "by": 1
+            },
+            {
+              "op": "recordAction",
+              "operation": "draft",
+              "resource": "supplierMaster",
+              "fields": [
+                "accountDigest",
+                "taxId"
+              ],
+              "purpose": "supplier-maintenance"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W03",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W03",
+      "evidenceStatus": "fixture",
+      "workflowId": "supplier-management",
+      "actorId": "P-VERIFIER",
+      "operation": "verify",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "supplierMaster",
+            "select": {
+              "fact": "draft.version"
+            }
+          },
+          "role": "draft"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-DIRECTORY",
+          "operation": "read",
+          "resource": "contactDirectory"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W02"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W03"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "verified",
+          "nominal": true,
+          "minutes": 6,
+          "verification": true,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "read",
+              "resource": "contactDirectory",
+              "fields": [],
+              "purpose": "beneficiary-verification"
+            },
+            {
+              "op": "issueEvidence",
+              "kind": "beneficiaryVerification",
+              "subject": "draft",
+              "method": {
+                "ref": "env",
+                "key": "verificationMethod"
+              },
+              "sources": [
+                {
+                  "ref": "env",
+                  "key": "verificationSource"
+                }
+              ],
+              "validDays": 365
+            }
+          ],
+          "when": {
+            "op": "equals",
+            "left": {
+              "ref": "env",
+              "key": "directoryDigest"
+            },
+            "right": {
+              "ref": "field",
+              "asset": {
+                "kind": "supplierMaster",
+                "select": {
+                  "fact": "draft.version"
+                }
+              },
+              "name": "accountDigest"
+            }
+          }
+        },
+        {
+          "id": "mismatch",
+          "nominal": false,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "read",
+              "resource": "contactDirectory",
+              "fields": [],
+              "purpose": "beneficiary-verification"
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.pending"
+              },
+              "value": {
+                "ref": "lit",
+                "value": true
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.reason"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "beneficiary_verification_failed"
+              }
+            }
+          ],
+          "when": {
+            "op": "not",
+            "arg": {
+              "op": "equals",
+              "left": {
+                "ref": "env",
+                "key": "directoryDigest"
+              },
+              "right": {
+                "ref": "field",
+                "asset": {
+                  "kind": "supplierMaster",
+                  "select": {
+                    "fact": "draft.version"
+                  }
+                },
+                "name": "accountDigest"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "W04",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W04",
+      "evidenceStatus": "fixture",
+      "workflowId": "supplier-management",
+      "actorId": "P-MAINT",
+      "operation": "commitVersion",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "supplierMaster",
+            "select": {
+              "fact": "draft.version"
+            }
+          },
+          "role": "draft"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-MASTER",
+          "operation": "write",
+          "resource": "supplierMaster"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W02"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W04"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [
+        "C1"
+      ],
+      "effects": [],
+      "branches": [
+        {
+          "id": "commit",
+          "nominal": true,
+          "minutes": 1,
+          "verification": false,
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "asset",
+                "asset": {
+                  "kind": "supplierMaster",
+                  "select": {
+                    "fact": "draft.version"
+                  }
+                },
+                "name": "status"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "committed"
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "master.current"
+              },
+              "value": {
+                "ref": "fact",
+                "key": "draft.version"
+              }
+            },
+            {
+              "op": "recordAction",
+              "operation": "commit",
+              "resource": "supplierMaster",
+              "fields": [
+                "accountDigest"
+              ],
+              "purpose": "supplier-maintenance"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W05",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W05",
+      "evidenceStatus": "fixture",
+      "workflowId": "supplier-management",
+      "actorId": "P-CLEARER",
+      "operation": "verify",
+      "inputs": [],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-MASTER",
+          "operation": "read",
+          "resource": "supplierMaster"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W05"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "evidence",
+              "name": "hasClearance",
+              "target": "supplier"
+            }
+          },
+          {
+            "op": "any",
+            "args": [
+              {
+                "op": "not",
+                "arg": {
+                  "op": "equals",
+                  "left": {
+                    "ref": "env",
+                    "key": "supplierChange"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": true
+                  }
+                }
+              },
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W01"
+                },
+                "cmp": "gte",
+                "right": {
+                  "ref": "lit",
+                  "value": 1
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "cleared",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "read",
+              "resource": "supplierMaster",
+              "fields": [],
+              "purpose": "onboarding-review"
+            },
+            {
+              "op": "issueEvidence",
+              "kind": "onboardingClearance",
+              "subject": "supplier",
+              "method": {
+                "ref": "lit",
+                "value": "onboarding-review"
+              },
+              "sources": [
+                {
+                  "ref": "lit",
+                  "value": "SYS-MASTER"
+                }
+              ],
+              "validDays": 365
+            }
+          ],
+          "when": {
+            "op": "equals",
+            "left": {
+              "ref": "env",
+              "key": "clearanceOk"
+            },
+            "right": {
+              "ref": "lit",
+              "value": true
+            }
+          }
+        },
+        {
+          "id": "held",
+          "nominal": false,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "read",
+              "resource": "supplierMaster",
+              "fields": [],
+              "purpose": "onboarding-review"
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.pending"
+              },
+              "value": {
+                "ref": "lit",
+                "value": true
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.reason"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "onboarding_not_cleared"
+              }
+            }
+          ],
+          "when": {
+            "op": "not",
+            "arg": {
+              "op": "equals",
+              "left": {
+                "ref": "env",
+                "key": "clearanceOk"
+              },
+              "right": {
+                "ref": "lit",
+                "value": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "W06",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W06",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-AP-CLERK",
+      "operation": "extract",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "invoice",
+            "select": "latest"
+          },
+          "role": "document"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-INVOICE",
+          "operation": "read",
+          "resource": "invoice"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "equals",
+            "left": {
+              "ref": "env",
+              "key": "hasInvoice"
+            },
+            "right": {
+              "ref": "lit",
+              "value": true
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W06"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "extract_correct",
+          "nominal": true,
+          "minutes": 5,
+          "verification": false,
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "asset",
+                "asset": {
+                  "kind": "invoice",
+                  "select": "latest"
+                },
+                "name": "extractedAmountCents"
+              },
+              "value": {
+                "ref": "field",
+                "asset": {
+                  "kind": "invoice",
+                  "select": "latest"
+                },
+                "name": "amountCents"
+              }
+            },
+            {
+              "op": "recordAction",
+              "operation": "extract",
+              "resource": "invoice",
+              "fields": [
+                "amountCents"
+              ],
+              "purpose": "invoice-processing"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W07",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W07",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-AP-CLERK",
+      "operation": "combine",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "invoice",
+            "select": "latest"
+          },
+          "role": "invoice"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-MATCHER",
+          "operation": "match",
+          "resource": "orderReceiptMatch"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W06"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W07"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "match",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "createAsset",
+              "kind": "orderReceiptMatch",
+              "objectId": {
+                "ref": "env",
+                "key": "invoiceId"
+              },
+              "version": {
+                "ref": "version",
+                "asset": {
+                  "kind": "invoice",
+                  "select": "latest"
+                }
+              },
+              "status": "matched",
+              "fields": [
+                {
+                  "name": "result",
+                  "value": {
+                    "ref": "lit",
+                    "value": "match"
+                  },
+                  "lineage": [
+                    "matcher"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "invoice-processing"
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "recordAction",
+              "operation": "match",
+              "resource": "orderReceiptMatch",
+              "fields": [],
+              "purpose": "invoice-processing"
+            }
+          ],
+          "when": {
+            "op": "equals",
+            "left": {
+              "ref": "field",
+              "asset": {
+                "kind": "invoice",
+                "select": "latest"
+              },
+              "name": "extractedAmountCents"
+            },
+            "right": {
+              "ref": "env",
+              "key": "orderAmountCents"
+            }
+          }
+        },
+        {
+          "id": "mismatch",
+          "nominal": false,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "createAsset",
+              "kind": "orderReceiptMatch",
+              "objectId": {
+                "ref": "env",
+                "key": "invoiceId"
+              },
+              "version": {
+                "ref": "version",
+                "asset": {
+                  "kind": "invoice",
+                  "select": "latest"
+                }
+              },
+              "status": "matched",
+              "fields": [
+                {
+                  "name": "result",
+                  "value": {
+                    "ref": "lit",
+                    "value": "mismatch"
+                  },
+                  "lineage": [
+                    "matcher"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "invoice-processing"
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "recordAction",
+              "operation": "match",
+              "resource": "orderReceiptMatch",
+              "fields": [],
+              "purpose": "invoice-processing"
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.pending"
+              },
+              "value": {
+                "ref": "lit",
+                "value": true
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.reason"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "invoice_mismatch"
+              }
+            }
+          ],
+          "when": {
+            "op": "not",
+            "arg": {
+              "op": "equals",
+              "left": {
+                "ref": "field",
+                "asset": {
+                  "kind": "invoice",
+                  "select": "latest"
+                },
+                "name": "extractedAmountCents"
+              },
+              "right": {
+                "ref": "env",
+                "key": "orderAmountCents"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "W08",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W08",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-PAYOPS",
+      "operation": "propose",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "invoice",
+            "select": "latest"
+          },
+          "role": "invoice"
+        },
+        {
+          "asset": {
+            "kind": "supplierMaster",
+            "select": {
+              "fact": "master.current"
+            }
+          },
+          "role": "master"
+        },
+        {
+          "asset": {
+            "kind": "orderReceiptMatch",
+            "select": "latest"
+          },
+          "role": "match"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-APPROVAL",
+          "operation": "write",
+          "resource": "paymentRequest"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W06"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W07"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W08"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          },
+          {
+            "op": "exists",
+            "asset": {
+              "kind": "supplierMaster",
+              "select": {
+                "fact": "master.current"
+              }
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "field",
+              "asset": {
+                "kind": "orderReceiptMatch",
+                "select": "latest"
+              },
+              "name": "result"
+            },
+            "right": {
+              "ref": "lit",
+              "value": "match"
+            }
+          },
+          {
+            "op": "evidence",
+            "name": "hasClearance",
+            "target": "supplier"
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "prepare",
+          "nominal": true,
+          "minutes": 3,
+          "verification": false,
+          "effects": [
+            {
+              "op": "createAsset",
+              "kind": "paymentRequest",
+              "objectId": {
+                "ref": "env",
+                "key": "paymentId"
+              },
+              "version": {
+                "ref": "fact",
+                "key": "payment.next"
+              },
+              "status": "prepared",
+              "fields": [
+                {
+                  "name": "paymentId",
+                  "value": {
+                    "ref": "env",
+                    "key": "paymentId"
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "invoiceId",
+                  "value": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    },
+                    "name": "invoiceId"
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "invoiceVersion",
+                  "value": {
+                    "ref": "version",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    }
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "supplierId",
+                  "value": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierMaster",
+                      "select": {
+                        "fact": "master.current"
+                      }
+                    },
+                    "name": "supplierId"
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "bankVersion",
+                  "value": {
+                    "ref": "version",
+                    "asset": {
+                      "kind": "supplierMaster",
+                      "select": {
+                        "fact": "master.current"
+                      }
+                    }
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "accountDigest",
+                  "value": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierMaster",
+                      "select": {
+                        "fact": "master.current"
+                      }
+                    },
+                    "name": "accountDigest"
+                  },
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "amountCents",
+                  "value": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    },
+                    "name": "extractedAmountCents"
+                  },
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "currency",
+                  "value": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    },
+                    "name": "currency"
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "obligationId",
+                  "value": {
+                    "ref": "env",
+                    "key": "obligationId"
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                },
+                {
+                  "name": "preparerId",
+                  "value": {
+                    "ref": "actor"
+                  },
+                  "lineage": [
+                    "payment-snapshot"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-execution"
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "incrementCounter",
+              "key": "payment.next",
+              "by": 1
+            },
+            {
+              "op": "recordAction",
+              "operation": "prepare",
+              "resource": "paymentRequest",
+              "fields": [
+                "amountCents",
+                "accountDigest"
+              ],
+              "purpose": "payment-preparation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W09",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W09",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-VERIFIER",
+      "operation": "verify",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "paymentRequest",
+            "select": "latest"
+          },
+          "role": "payment"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-DIRECTORY",
+          "operation": "read",
+          "resource": "contactDirectory"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W08"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W09"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "retain",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [],
+          "when": {
+            "op": "evidence",
+            "name": "validBeneficiary",
+            "target": "payload"
+          }
+        },
+        {
+          "id": "verify_ok",
+          "nominal": true,
+          "minutes": 6,
+          "verification": true,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "read",
+              "resource": "contactDirectory",
+              "fields": [],
+              "purpose": "beneficiary-verification"
+            },
+            {
+              "op": "issueEvidence",
+              "kind": "beneficiaryVerification",
+              "subject": "committed",
+              "method": {
+                "ref": "env",
+                "key": "verificationMethod"
+              },
+              "sources": [
+                {
+                  "ref": "env",
+                  "key": "verificationSource"
+                }
+              ],
+              "validDays": 365
+            }
+          ],
+          "when": {
+            "op": "all",
+            "args": [
+              {
+                "op": "not",
+                "arg": {
+                  "op": "evidence",
+                  "name": "validBeneficiary",
+                  "target": "payload"
+                }
+              },
+              {
+                "op": "equals",
+                "left": {
+                  "ref": "env",
+                  "key": "directoryDigest"
+                },
+                "right": {
+                  "ref": "field",
+                  "asset": {
+                    "kind": "supplierMaster",
+                    "select": {
+                      "fact": "master.current"
+                    }
+                  },
+                  "name": "accountDigest"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "verify_fail",
+          "nominal": false,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "read",
+              "resource": "contactDirectory",
+              "fields": [],
+              "purpose": "beneficiary-verification"
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.pending"
+              },
+              "value": {
+                "ref": "lit",
+                "value": true
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.reason"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "beneficiary_verification_failed"
+              }
+            }
+          ],
+          "when": {
+            "op": "all",
+            "args": [
+              {
+                "op": "not",
+                "arg": {
+                  "op": "evidence",
+                  "name": "validBeneficiary",
+                  "target": "payload"
+                }
+              },
+              {
+                "op": "not",
+                "arg": {
+                  "op": "equals",
+                  "left": {
+                    "ref": "env",
+                    "key": "directoryDigest"
+                  },
+                  "right": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierMaster",
+                      "select": {
+                        "fact": "master.current"
+                      }
+                    },
+                    "name": "accountDigest"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "W10",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W10",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-APPROVER",
+      "operation": "authorize",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "paymentRequest",
+            "select": "latest"
+          },
+          "role": "payment"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-APPROVAL",
+          "operation": "authorize",
+          "resource": "paymentRequest"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W08"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W09"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W10"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "approve_routine",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "authorize",
+              "resource": "paymentRequest",
+              "fields": [],
+              "purpose": "payment-authorization"
+            },
+            {
+              "op": "issueEvidence",
+              "kind": "paymentAuthorization",
+              "subject": "payment",
+              "method": {
+                "ref": "lit",
+                "value": "payment-approval"
+              },
+              "sources": [
+                {
+                  "ref": "lit",
+                  "value": "SYS-APPROVAL"
+                }
+              ],
+              "escalation": {
+                "ref": "lit",
+                "value": false
+              },
+              "validDays": 365
+            }
+          ],
+          "when": {
+            "op": "compare",
+            "left": {
+              "ref": "field",
+              "asset": {
+                "kind": "paymentRequest",
+                "select": "latest"
+              },
+              "name": "amountCents"
+            },
+            "cmp": "lte",
+            "right": {
+              "ref": "policy",
+              "policyId": "P05",
+              "key": "limitCents"
+            }
+          }
+        },
+        {
+          "id": "approve_escalated",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "authorize",
+              "resource": "paymentRequest",
+              "fields": [],
+              "purpose": "payment-authorization"
+            },
+            {
+              "op": "issueEvidence",
+              "kind": "paymentAuthorization",
+              "subject": "payment",
+              "method": {
+                "ref": "lit",
+                "value": "payment-approval"
+              },
+              "sources": [
+                {
+                  "ref": "lit",
+                  "value": "SYS-APPROVAL"
+                }
+              ],
+              "escalation": {
+                "ref": "lit",
+                "value": true
+              },
+              "validDays": 365
+            }
+          ],
+          "when": {
+            "op": "all",
+            "args": [
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "field",
+                  "asset": {
+                    "kind": "paymentRequest",
+                    "select": "latest"
+                  },
+                  "name": "amountCents"
+                },
+                "cmp": "gt",
+                "right": {
+                  "ref": "policy",
+                  "policyId": "P05",
+                  "key": "limitCents"
+                }
+              },
+              {
+                "op": "equals",
+                "left": {
+                  "ref": "env",
+                  "key": "escalationApproved"
+                },
+                "right": {
+                  "ref": "lit",
+                  "value": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "hold_escalation_required",
+          "nominal": false,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "authorize",
+              "resource": "paymentRequest",
+              "fields": [],
+              "purpose": "payment-authorization"
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.pending"
+              },
+              "value": {
+                "ref": "lit",
+                "value": true
+              }
+            },
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "hold.reason"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "escalation_required"
+              }
+            }
+          ],
+          "when": {
+            "op": "all",
+            "args": [
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "field",
+                  "asset": {
+                    "kind": "paymentRequest",
+                    "select": "latest"
+                  },
+                  "name": "amountCents"
+                },
+                "cmp": "gt",
+                "right": {
+                  "ref": "policy",
+                  "policyId": "P05",
+                  "key": "limitCents"
+                }
+              },
+              {
+                "op": "not",
+                "arg": {
+                  "op": "equals",
+                  "left": {
+                    "ref": "env",
+                    "key": "escalationApproved"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "W11",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W11",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-PAYOPS",
+      "operation": "execute",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "paymentRequest",
+            "select": "latest"
+          },
+          "role": "payment"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-GATEWAY",
+          "operation": "submit",
+          "resource": "payment"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "compare",
+            "left": {
+              "ref": "fact",
+              "key": "done.W10"
+            },
+            "cmp": "gte",
+            "right": {
+              "ref": "lit",
+              "value": 1
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W11"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          },
+          {
+            "op": "exists",
+            "asset": {
+              "kind": "supplierMaster",
+              "select": {
+                "fact": "master.current"
+              }
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [
+        "C3",
+        "C6"
+      ],
+      "effects": [],
+      "branches": [
+        {
+          "id": "ack_ok",
+          "nominal": true,
+          "minutes": 1,
+          "verification": false,
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "ack"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "ok"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ack_uncertain",
+          "nominal": false,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "ack"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "uncertain"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W12",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W12",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-PAYOPS",
+      "operation": "commitVersion",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "paymentRequest",
+            "select": "latest"
+          },
+          "role": "payment"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-GATEWAY",
+          "operation": "read",
+          "resource": "paymentReceipt"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "ack"
+            },
+            "right": {
+              "ref": "lit",
+              "value": "ok"
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W12"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "compare",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W01"
+                  },
+                  "cmp": "gte",
+                  "right": {
+                    "ref": "lit",
+                    "value": 1
+                  }
+                },
+                {
+                  "op": "equals",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W04"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": 0
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "reconcile",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "createAsset",
+              "kind": "paymentReceipt",
+              "objectId": {
+                "ref": "env",
+                "key": "paymentId"
+              },
+              "version": {
+                "ref": "lit",
+                "value": 1
+              },
+              "status": "reconciled",
+              "fields": [
+                {
+                  "name": "obligationId",
+                  "value": {
+                    "ref": "env",
+                    "key": "obligationId"
+                  },
+                  "lineage": [
+                    "gateway-ack"
+                  ],
+                  "categories": [],
+                  "purposes": [
+                    "payment-reconciliation"
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "recordAction",
+              "operation": "reconcile",
+              "resource": "paymentReceipt",
+              "fields": [],
+              "purpose": "payment-reconciliation"
+            },
+            {
+              "op": "setDisposition",
+              "disposition": "reconciled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W13",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W13",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-AP-CLERK",
+      "operation": "hold",
+      "inputs": [],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-APPROVAL",
+          "operation": "hold",
+          "resource": "exception"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "hold.pending"
+            },
+            "right": {
+              "ref": "lit",
+              "value": true
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W13"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [],
+      "effects": [],
+      "branches": [
+        {
+          "id": "hold",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "recordAction",
+              "operation": "hold",
+              "resource": "exception",
+              "fields": [],
+              "purpose": "exception-handling"
+            },
+            {
+              "op": "setDisposition",
+              "disposition": "held",
+              "reason": {
+                "ref": "fact",
+                "key": "hold.reason"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W14",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 W14",
+      "evidenceStatus": "fixture",
+      "workflowId": "invoice-to-payment",
+      "actorId": "P-PAYOPS",
+      "operation": "execute",
+      "inputs": [
+        {
+          "asset": {
+            "kind": "paymentRequest",
+            "select": "latest"
+          },
+          "role": "payment"
+        }
+      ],
+      "capabilityRequirements": [
+        {
+          "system": "SYS-GATEWAY",
+          "operation": "submit",
+          "resource": "payment"
+        }
+      ],
+      "workflowPreconditions": {
+        "op": "all",
+        "args": [
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "ack"
+            },
+            "right": {
+              "ref": "lit",
+              "value": "uncertain"
+            }
+          },
+          {
+            "op": "equals",
+            "left": {
+              "ref": "fact",
+              "key": "done.W14"
+            },
+            "right": {
+              "ref": "lit",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "implementedControlIds": [
+        "C3",
+        "C6"
+      ],
+      "effects": [],
+      "branches": [
+        {
+          "id": "ack_ok",
+          "nominal": true,
+          "minutes": 0,
+          "verification": false,
+          "effects": [
+            {
+              "op": "setField",
+              "target": {
+                "kind": "fact",
+                "key": "ack"
+              },
+              "value": {
+                "ref": "lit",
+                "value": "ok"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "G-P-PROC-SYS-INBOX-read-supplierClaim",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-PROC",
+      "system": "SYS-INBOX",
+      "operation": "read",
+      "resource": "supplierClaim"
+    },
+    {
+      "id": "G-P-MAINT-SYS-INBOX-read-supplierClaim",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-MAINT",
+      "system": "SYS-INBOX",
+      "operation": "read",
+      "resource": "supplierClaim"
+    },
+    {
+      "id": "G-P-MAINT-SYS-MASTER-write-supplierMaster",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-MAINT",
+      "system": "SYS-MASTER",
+      "operation": "write",
+      "resource": "supplierMaster"
+    },
+    {
+      "id": "G-P-VERIFIER-SYS-DIRECTORY-read-contactDirectory",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-VERIFIER",
+      "system": "SYS-DIRECTORY",
+      "operation": "read",
+      "resource": "contactDirectory"
+    },
+    {
+      "id": "G-P-CLEARER-SYS-MASTER-read-supplierMaster",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-CLEARER",
+      "system": "SYS-MASTER",
+      "operation": "read",
+      "resource": "supplierMaster"
+    },
+    {
+      "id": "G-P-AP-CLERK-SYS-INVOICE-read-invoice",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-AP-CLERK",
+      "system": "SYS-INVOICE",
+      "operation": "read",
+      "resource": "invoice"
+    },
+    {
+      "id": "G-P-AP-CLERK-SYS-MATCHER-match-orderReceiptMatch",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-AP-CLERK",
+      "system": "SYS-MATCHER",
+      "operation": "match",
+      "resource": "orderReceiptMatch"
+    },
+    {
+      "id": "G-P-AP-CLERK-SYS-APPROVAL-hold-exception",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-AP-CLERK",
+      "system": "SYS-APPROVAL",
+      "operation": "hold",
+      "resource": "exception"
+    },
+    {
+      "id": "G-P-PAYOPS-SYS-APPROVAL-write-paymentRequest",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-PAYOPS",
+      "system": "SYS-APPROVAL",
+      "operation": "write",
+      "resource": "paymentRequest"
+    },
+    {
+      "id": "G-PAYOPS-SUBMIT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-PAYOPS",
+      "system": "SYS-GATEWAY",
+      "operation": "submit",
+      "resource": "payment"
+    },
+    {
+      "id": "G-P-PAYOPS-SYS-GATEWAY-read-paymentReceipt",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-PAYOPS",
+      "system": "SYS-GATEWAY",
+      "operation": "read",
+      "resource": "paymentReceipt"
+    },
+    {
+      "id": "G-P-APPROVER-SYS-APPROVAL-authorize-paymentRequest",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "principalId": "P-APPROVER",
+      "system": "SYS-APPROVAL",
+      "operation": "authorize",
+      "resource": "paymentRequest"
+    }
+  ],
+  "authorization": [
+    {
+      "id": "R-INTAKE-RECEIVE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-INTAKE"
+      ],
+      "operations": [
+        "receive"
+      ],
+      "resources": [
+        "supplierClaim"
+      ],
+      "purposes": [
+        "supplier-onboarding"
+      ]
+    },
+    {
+      "id": "R-MAINT-WRITE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-SUPPLIER-MAINTAINER"
+      ],
+      "operations": [
+        "draft",
+        "commit"
+      ],
+      "resources": [
+        "supplierMaster"
+      ],
+      "purposes": [
+        "supplier-maintenance"
+      ]
+    },
+    {
+      "id": "R-VERIFIER-READ",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-BENEFICIARY-VERIFIER"
+      ],
+      "operations": [
+        "read"
+      ],
+      "resources": [
+        "contactDirectory"
+      ],
+      "purposes": [
+        "beneficiary-verification"
+      ]
+    },
+    {
+      "id": "R-VERIFIER-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-BENEFICIARY-VERIFIER"
+      ],
+      "operations": [
+        "issueEvidence"
+      ],
+      "resources": [
+        "evidence:beneficiaryVerification"
+      ],
+      "purposes": [
+        "evidence-issuance"
+      ]
+    },
+    {
+      "id": "R-CLEARER-READ",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-ONBOARDING-CLEARER"
+      ],
+      "operations": [
+        "read"
+      ],
+      "resources": [
+        "supplierMaster"
+      ],
+      "purposes": [
+        "onboarding-review"
+      ]
+    },
+    {
+      "id": "R-CLEARER-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-ONBOARDING-CLEARER"
+      ],
+      "operations": [
+        "issueEvidence"
+      ],
+      "resources": [
+        "evidence:onboardingClearance"
+      ],
+      "purposes": [
+        "evidence-issuance"
+      ]
+    },
+    {
+      "id": "R-CLERK-INVOICE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-INVOICE-CLERK"
+      ],
+      "operations": [
+        "extract",
+        "match"
+      ],
+      "resources": [
+        "invoice",
+        "orderReceiptMatch"
+      ],
+      "purposes": [
+        "invoice-processing"
+      ]
+    },
+    {
+      "id": "R-CLERK-HOLD",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-INVOICE-CLERK"
+      ],
+      "operations": [
+        "hold"
+      ],
+      "resources": [
+        "exception"
+      ],
+      "purposes": [
+        "exception-handling"
+      ]
+    },
+    {
+      "id": "R-PREPARER-PREPARE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-PAYMENT-PREPARER"
+      ],
+      "operations": [
+        "prepare"
+      ],
+      "resources": [
+        "paymentRequest"
+      ],
+      "purposes": [
+        "payment-preparation"
+      ]
+    },
+    {
+      "id": "R-PREPARER-EXECUTE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-PAYMENT-PREPARER"
+      ],
+      "operations": [
+        "execute"
+      ],
+      "resources": [
+        "gateway:payment"
+      ],
+      "purposes": [
+        "payment-execution"
+      ]
+    },
+    {
+      "id": "R-PREPARER-RECONCILE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-PAYMENT-PREPARER"
+      ],
+      "operations": [
+        "reconcile"
+      ],
+      "resources": [
+        "paymentReceipt"
+      ],
+      "purposes": [
+        "payment-reconciliation"
+      ]
+    },
+    {
+      "id": "R-APPROVER-AUTHORIZE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-PAYMENT-APPROVER"
+      ],
+      "operations": [
+        "authorize"
+      ],
+      "resources": [
+        "paymentRequest"
+      ],
+      "purposes": [
+        "payment-authorization"
+      ]
+    },
+    {
+      "id": "R-APPROVER-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.1",
+      "evidenceStatus": "fixture",
+      "effect": "allow",
+      "principalIds": [],
+      "roleIds": [
+        "ROLE-PAYMENT-APPROVER"
+      ],
+      "operations": [
+        "issueEvidence"
+      ],
+      "resources": [
+        "evidence:paymentAuthorization"
+      ],
+      "purposes": [
+        "evidence-issuance"
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "P01",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2",
+      "evidenceStatus": "fixture",
+      "name": "Beneficiary integrity",
+      "requirement": "The executed payment destination has valid independent verification for the exact supplier, bank version, and account digest.",
+      "params": {
+        "verifierRoleIds": [
+          "ROLE-BENEFICIARY-VERIFIER"
+        ],
+        "admittedMethods": [
+          "callback-trusted-directory"
+        ],
+        "trustedSources": [
+          "SYS-DIRECTORY"
+        ]
+      }
+    },
+    {
+      "id": "P02",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2",
+      "evidenceStatus": "fixture",
+      "name": "Bound, independent approval",
+      "requirement": "A valid approval covers the exact payment fingerprint and is independent of its preparer.",
+      "params": {
+        "approverRoleIds": [
+          "ROLE-PAYMENT-APPROVER"
+        ]
+      }
+    },
+    {
+      "id": "P03",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2",
+      "evidenceStatus": "fixture",
+      "name": "Authorized operation",
+      "requirement": "Executing principal, operation, resource and purpose satisfy the authorization table.",
+      "params": {}
+    },
+    {
+      "id": "P04",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2",
+      "evidenceStatus": "fixture",
+      "name": "Restricted-data transfer",
+      "requirement": "Restricted fields leave a boundary only to an approved recipient, for an approved purpose, within the permitted field set.",
+      "params": {}
+    },
+    {
+      "id": "P05",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2",
+      "evidenceStatus": "fixture",
+      "name": "Business prerequisites",
+      "requirement": "Onboarding clearance, exact invoice-version match, and amount within limit or explicit escalation.",
+      "params": {
+        "limitCents": 1000000,
+        "clearanceRoleIds": [
+          "ROLE-ONBOARDING-CLEARER"
+        ]
+      }
+    },
+    {
+      "id": "P06",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2",
+      "evidenceStatus": "fixture",
+      "name": "At-most-once settlement",
+      "requirement": "A payment obligation is not settled more than once across the permitted retry.",
+      "params": {
+        "maxSettlements": 1
+      }
+    }
+  ],
+  "automations": [
+    {
+      "id": "A1",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.2 A1",
+      "evidenceStatus": "fixture",
+      "label": "A1 — Invoice extraction",
+      "description": "Bind W06 to the extraction agent with bounded extraction branches; no authority to issue attestations.",
+      "patch": [
+        {
+          "op": "setContract",
+          "contract": {
+            "id": "W06",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §2.1 W06",
+            "evidenceStatus": "fixture",
+            "workflowId": "invoice-to-payment",
+            "actorId": "SVC-EXTRACT",
+            "operation": "extract",
+            "inputs": [
+              {
+                "asset": {
+                  "kind": "invoice",
+                  "select": "latest"
+                },
+                "role": "document"
+              }
+            ],
+            "capabilityRequirements": [
+              {
+                "system": "SYS-INVOICE",
+                "operation": "read",
+                "resource": "invoice"
+              },
+              {
+                "system": "SYS-EXTRACTOR",
+                "operation": "extract",
+                "resource": "invoice"
+              }
+            ],
+            "workflowPreconditions": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "equals",
+                  "left": {
+                    "ref": "env",
+                    "key": "hasInvoice"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": true
+                  }
+                },
+                {
+                  "op": "equals",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W06"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": 0
+                  }
+                }
+              ]
+            },
+            "implementedControlIds": [],
+            "effects": [],
+            "branches": [
+              {
+                "id": "extract_correct",
+                "nominal": true,
+                "minutes": 0,
+                "verification": false,
+                "effects": [
+                  {
+                    "op": "recordTransfer",
+                    "to": "SYS-EXTRACTOR",
+                    "purpose": "invoice-extraction",
+                    "fields": [
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "invoiceId"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "supplierRef"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "amountCents"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "currency"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "lineItems"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "orderRef"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "remitBankAccount"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "remitTaxId"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "asset",
+                      "asset": {
+                        "kind": "invoice",
+                        "select": "latest"
+                      },
+                      "name": "extractedAmountCents"
+                    },
+                    "value": {
+                      "ref": "field",
+                      "asset": {
+                        "kind": "invoice",
+                        "select": "latest"
+                      },
+                      "name": "amountCents"
+                    }
+                  },
+                  {
+                    "op": "recordAction",
+                    "operation": "extract",
+                    "resource": "invoice",
+                    "fields": [
+                      "amountCents"
+                    ],
+                    "purpose": "invoice-processing"
+                  }
+                ]
+              },
+              {
+                "id": "extract_correct_via_summary",
+                "nominal": true,
+                "minutes": 0,
+                "verification": false,
+                "effects": [
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "asset",
+                      "asset": {
+                        "kind": "invoice",
+                        "select": "latest"
+                      },
+                      "name": "summaryText"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": "invoice-summary"
+                    },
+                    "derivedFrom": [
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "remitBankAccount"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "remitTaxId"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "lineItems"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "recordTransfer",
+                    "to": "SYS-EXTRACTOR",
+                    "purpose": "invoice-extraction",
+                    "fields": [
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "invoiceId"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "supplierRef"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "amountCents"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "currency"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "lineItems"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "orderRef"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "summaryText"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "asset",
+                      "asset": {
+                        "kind": "invoice",
+                        "select": "latest"
+                      },
+                      "name": "extractedAmountCents"
+                    },
+                    "value": {
+                      "ref": "field",
+                      "asset": {
+                        "kind": "invoice",
+                        "select": "latest"
+                      },
+                      "name": "amountCents"
+                    }
+                  },
+                  {
+                    "op": "recordAction",
+                    "operation": "extract",
+                    "resource": "invoice",
+                    "fields": [
+                      "amountCents"
+                    ],
+                    "purpose": "invoice-processing"
+                  }
+                ]
+              },
+              {
+                "id": "extract_mismatch",
+                "nominal": false,
+                "minutes": 0,
+                "verification": false,
+                "effects": [
+                  {
+                    "op": "recordTransfer",
+                    "to": "SYS-EXTRACTOR",
+                    "purpose": "invoice-extraction",
+                    "fields": [
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "invoiceId"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "supplierRef"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "amountCents"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "currency"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "lineItems"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "orderRef"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "remitBankAccount"
+                      },
+                      {
+                        "asset": {
+                          "kind": "invoice",
+                          "select": "latest"
+                        },
+                        "name": "remitTaxId"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "asset",
+                      "asset": {
+                        "kind": "invoice",
+                        "select": "latest"
+                      },
+                      "name": "extractedAmountCents"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": 1
+                    }
+                  },
+                  {
+                    "op": "recordAction",
+                    "operation": "extract",
+                    "resource": "invoice",
+                    "fields": [
+                      "amountCents"
+                    ],
+                    "purpose": "invoice-processing"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCEXT-INVOICE-READ",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-EXTRACT",
+            "system": "SYS-INVOICE",
+            "operation": "read",
+            "resource": "invoice"
+          }
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCEXT-EXTRACT",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-EXTRACT",
+            "system": "SYS-EXTRACTOR",
+            "operation": "extract",
+            "resource": "invoice"
+          }
+        },
+        {
+          "op": "addAuthRule",
+          "rule": {
+            "id": "R-SVCEXT-EXTRACT",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "effect": "allow",
+            "principalIds": [
+              "SVC-EXTRACT"
+            ],
+            "roleIds": [],
+            "operations": [
+              "extract"
+            ],
+            "resources": [
+              "invoice"
+            ],
+            "purposes": [
+              "invoice-processing"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.2 A2",
+      "evidenceStatus": "fixture",
+      "label": "A2 — Supplier maintenance",
+      "description": "Bind W02/W04 to the supplier agent with scoped master writes; removes W03 and the W04 precommit requirement.",
+      "patch": [
+        {
+          "op": "setActor",
+          "id": "W02",
+          "actorId": "SVC-SUPPLIER"
+        },
+        {
+          "op": "setActor",
+          "id": "W04",
+          "actorId": "SVC-SUPPLIER"
+        },
+        {
+          "op": "removeContract",
+          "id": "W03"
+        },
+        {
+          "op": "removeControl",
+          "id": "W04",
+          "controlId": "C1"
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCSUP-CLAIM-READ",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-SUPPLIER",
+            "system": "SYS-INBOX",
+            "operation": "read",
+            "resource": "supplierClaim"
+          }
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCSUP-MASTER-WRITE",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-SUPPLIER",
+            "system": "SYS-MASTER",
+            "operation": "write",
+            "resource": "supplierMaster"
+          }
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCSUP-DIRECTORY-READ",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-SUPPLIER",
+            "system": "SYS-DIRECTORY",
+            "operation": "read",
+            "resource": "contactDirectory"
+          }
+        },
+        {
+          "op": "addAuthRule",
+          "rule": {
+            "id": "R-SVCSUP-WRITE",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "effect": "allow",
+            "principalIds": [
+              "SVC-SUPPLIER"
+            ],
+            "roleIds": [],
+            "operations": [
+              "draft",
+              "commit"
+            ],
+            "resources": [
+              "supplierMaster"
+            ],
+            "purposes": [
+              "supplier-maintenance"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "A3",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.2 A3",
+      "evidenceStatus": "fixture",
+      "label": "A3 — Payment preparation and submission",
+      "description": "Bind W08/W11 to the payment agent; removes the manual W09 beneficiary check; retains W10, C3 and C6.",
+      "patch": [
+        {
+          "op": "setActor",
+          "id": "W08",
+          "actorId": "SVC-PAYMENT"
+        },
+        {
+          "op": "setActor",
+          "id": "W11",
+          "actorId": "SVC-PAYMENT"
+        },
+        {
+          "op": "removeContract",
+          "id": "W09"
+        },
+        {
+          "op": "setPrecondition",
+          "id": "W10",
+          "expr": {
+            "op": "all",
+            "args": [
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W08"
+                },
+                "cmp": "gte",
+                "right": {
+                  "ref": "lit",
+                  "value": 1
+                }
+              },
+              {
+                "op": "equals",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W10"
+                },
+                "right": {
+                  "ref": "lit",
+                  "value": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCPAY-PREPARE",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-PAYMENT",
+            "system": "SYS-APPROVAL",
+            "operation": "write",
+            "resource": "paymentRequest"
+          }
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCPAY-SUBMIT",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-PAYMENT",
+            "system": "SYS-GATEWAY",
+            "operation": "submit",
+            "resource": "payment"
+          }
+        },
+        {
+          "op": "addCapability",
+          "grant": {
+            "id": "G-SVCPAY-APPROVAL-READ",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "principalId": "SVC-PAYMENT",
+            "system": "SYS-APPROVAL",
+            "operation": "authorize",
+            "resource": "paymentRequest"
+          }
+        },
+        {
+          "op": "addAuthRule",
+          "rule": {
+            "id": "R-SVCPAY-PREPARE",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "effect": "allow",
+            "principalIds": [
+              "SVC-PAYMENT"
+            ],
+            "roleIds": [],
+            "operations": [
+              "prepare"
+            ],
+            "resources": [
+              "paymentRequest"
+            ],
+            "purposes": [
+              "payment-preparation"
+            ]
+          }
+        },
+        {
+          "op": "addAuthRule",
+          "rule": {
+            "id": "R-SVCPAY-EXECUTE",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "effect": "allow",
+            "principalIds": [
+              "SVC-PAYMENT"
+            ],
+            "roleIds": [],
+            "operations": [
+              "execute"
+            ],
+            "resources": [
+              "gateway:payment"
+            ],
+            "purposes": [
+              "payment-execution"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "repairs": [
+    {
+      "id": "C1",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "label": "C1 — Restore precommit beneficiary verification",
+      "description": "Restore independent W03 and the unavoidable W04 precommit requirement.",
+      "patch": [
+        {
+          "op": "ensureContract",
+          "contract": {
+            "id": "W03",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §2.1 W03",
+            "evidenceStatus": "fixture",
+            "workflowId": "supplier-management",
+            "actorId": "P-VERIFIER",
+            "operation": "verify",
+            "inputs": [
+              {
+                "asset": {
+                  "kind": "supplierMaster",
+                  "select": {
+                    "fact": "draft.version"
+                  }
+                },
+                "role": "draft"
+              }
+            ],
+            "capabilityRequirements": [
+              {
+                "system": "SYS-DIRECTORY",
+                "operation": "read",
+                "resource": "contactDirectory"
+              }
+            ],
+            "workflowPreconditions": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "compare",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W02"
+                  },
+                  "cmp": "gte",
+                  "right": {
+                    "ref": "lit",
+                    "value": 1
+                  }
+                },
+                {
+                  "op": "equals",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W03"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": 0
+                  }
+                }
+              ]
+            },
+            "implementedControlIds": [],
+            "effects": [],
+            "branches": [
+              {
+                "id": "verified",
+                "nominal": true,
+                "minutes": 6,
+                "verification": true,
+                "effects": [
+                  {
+                    "op": "recordAction",
+                    "operation": "read",
+                    "resource": "contactDirectory",
+                    "fields": [],
+                    "purpose": "beneficiary-verification"
+                  },
+                  {
+                    "op": "issueEvidence",
+                    "kind": "beneficiaryVerification",
+                    "subject": "draft",
+                    "method": {
+                      "ref": "env",
+                      "key": "verificationMethod"
+                    },
+                    "sources": [
+                      {
+                        "ref": "env",
+                        "key": "verificationSource"
+                      }
+                    ],
+                    "validDays": 365
+                  }
+                ],
+                "when": {
+                  "op": "equals",
+                  "left": {
+                    "ref": "env",
+                    "key": "directoryDigest"
+                  },
+                  "right": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierMaster",
+                      "select": {
+                        "fact": "draft.version"
+                      }
+                    },
+                    "name": "accountDigest"
+                  }
+                }
+              },
+              {
+                "id": "mismatch",
+                "nominal": false,
+                "minutes": 0,
+                "verification": false,
+                "effects": [
+                  {
+                    "op": "recordAction",
+                    "operation": "read",
+                    "resource": "contactDirectory",
+                    "fields": [],
+                    "purpose": "beneficiary-verification"
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "fact",
+                      "key": "hold.pending"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": true
+                    }
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "fact",
+                      "key": "hold.reason"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": "beneficiary_verification_failed"
+                    }
+                  }
+                ],
+                "when": {
+                  "op": "not",
+                  "arg": {
+                    "op": "equals",
+                    "left": {
+                      "ref": "env",
+                      "key": "directoryDigest"
+                    },
+                    "right": {
+                      "ref": "field",
+                      "asset": {
+                        "kind": "supplierMaster",
+                        "select": {
+                          "fact": "draft.version"
+                        }
+                      },
+                      "name": "accountDigest"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "addControl",
+          "id": "W04",
+          "controlId": "C1"
+        }
+      ],
+      "applicability": {}
+    },
+    {
+      "id": "C2",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "label": "C2 — Conditional verification at the payment gateway",
+      "description": "Reinstate conditional independent verification through W09 and enforce exact beneficiary evidence on every W11/W14 gateway entry.",
+      "patch": [
+        {
+          "op": "ensureContract",
+          "contract": {
+            "id": "W09",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §2.1 W09",
+            "evidenceStatus": "fixture",
+            "workflowId": "invoice-to-payment",
+            "actorId": "P-VERIFIER",
+            "operation": "verify",
+            "inputs": [
+              {
+                "asset": {
+                  "kind": "paymentRequest",
+                  "select": "latest"
+                },
+                "role": "payment"
+              }
+            ],
+            "capabilityRequirements": [
+              {
+                "system": "SYS-DIRECTORY",
+                "operation": "read",
+                "resource": "contactDirectory"
+              }
+            ],
+            "workflowPreconditions": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "compare",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W08"
+                  },
+                  "cmp": "gte",
+                  "right": {
+                    "ref": "lit",
+                    "value": 1
+                  }
+                },
+                {
+                  "op": "equals",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W09"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": 0
+                  }
+                },
+                {
+                  "op": "not",
+                  "arg": {
+                    "op": "evidence",
+                    "name": "validBeneficiary",
+                    "target": "payload"
+                  }
+                },
+                {
+                  "op": "any",
+                  "args": [
+                    {
+                      "op": "equals",
+                      "left": {
+                        "ref": "fact",
+                        "key": "gate.W11.blocked"
+                      },
+                      "right": {
+                        "ref": "lit",
+                        "value": true
+                      }
+                    },
+                    {
+                      "op": "equals",
+                      "left": {
+                        "ref": "fact",
+                        "key": "gate.W14.blocked"
+                      },
+                      "right": {
+                        "ref": "lit",
+                        "value": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "implementedControlIds": [],
+            "effects": [],
+            "branches": [
+              {
+                "id": "verify_ok",
+                "nominal": true,
+                "minutes": 6,
+                "verification": true,
+                "effects": [
+                  {
+                    "op": "recordAction",
+                    "operation": "read",
+                    "resource": "contactDirectory",
+                    "fields": [],
+                    "purpose": "beneficiary-verification"
+                  },
+                  {
+                    "op": "issueEvidence",
+                    "kind": "beneficiaryVerification",
+                    "subject": "committed",
+                    "method": {
+                      "ref": "env",
+                      "key": "verificationMethod"
+                    },
+                    "sources": [
+                      {
+                        "ref": "env",
+                        "key": "verificationSource"
+                      }
+                    ],
+                    "validDays": 365
+                  }
+                ],
+                "when": {
+                  "op": "equals",
+                  "left": {
+                    "ref": "env",
+                    "key": "directoryDigest"
+                  },
+                  "right": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierMaster",
+                      "select": {
+                        "fact": "master.current"
+                      }
+                    },
+                    "name": "accountDigest"
+                  }
+                }
+              },
+              {
+                "id": "verify_fail",
+                "nominal": false,
+                "minutes": 0,
+                "verification": false,
+                "effects": [
+                  {
+                    "op": "recordAction",
+                    "operation": "read",
+                    "resource": "contactDirectory",
+                    "fields": [],
+                    "purpose": "beneficiary-verification"
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "fact",
+                      "key": "hold.pending"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": true
+                    }
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "fact",
+                      "key": "hold.reason"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": "beneficiary_verification_failed"
+                    }
+                  }
+                ],
+                "when": {
+                  "op": "not",
+                  "arg": {
+                    "op": "equals",
+                    "left": {
+                      "ref": "env",
+                      "key": "directoryDigest"
+                    },
+                    "right": {
+                      "ref": "field",
+                      "asset": {
+                        "kind": "supplierMaster",
+                        "select": {
+                          "fact": "master.current"
+                        }
+                      },
+                      "name": "accountDigest"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "addControl",
+          "id": "W11",
+          "controlId": "C2"
+        },
+        {
+          "op": "addControl",
+          "id": "W14",
+          "controlId": "C2"
+        }
+      ],
+      "applicability": {}
+    },
+    {
+      "id": "C3",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "label": "C3 — Bind and revalidate payment authorization",
+      "description": "Install payload/version/fingerprint binding on all gateway entry points and the bounded re-preparation path.",
+      "patch": [
+        {
+          "op": "addControl",
+          "id": "W11",
+          "controlId": "C3"
+        },
+        {
+          "op": "addControl",
+          "id": "W14",
+          "controlId": "C3"
+        }
+      ],
+      "applicability": {}
+    },
+    {
+      "id": "C4",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "label": "C4 — Project restricted fields before external extraction",
+      "description": "Transfer only approved invoice fields; bank/tax processing stays internal.",
+      "patch": [
+        {
+          "op": "addControl",
+          "id": "W06",
+          "controlId": "C4"
+        }
+      ],
+      "applicability": {
+        "requiresExternalTransferOtherThan": [
+          "SYS-GATEWAY"
+        ]
+      }
+    },
+    {
+      "id": "C5",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "label": "C5 — Restore human supplier-maintenance execution",
+      "description": "Revoke the agent direct master-write capability; restore human W02/W04 and the verified commit path.",
+      "patch": [
+        {
+          "op": "setActor",
+          "id": "W02",
+          "actorId": "P-MAINT"
+        },
+        {
+          "op": "setActor",
+          "id": "W04",
+          "actorId": "P-MAINT"
+        },
+        {
+          "op": "removeCapability",
+          "grantId": "G-SVCSUP-MASTER-WRITE"
+        },
+        {
+          "op": "ensureContract",
+          "contract": {
+            "id": "W03",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §2.1 W03",
+            "evidenceStatus": "fixture",
+            "workflowId": "supplier-management",
+            "actorId": "P-VERIFIER",
+            "operation": "verify",
+            "inputs": [
+              {
+                "asset": {
+                  "kind": "supplierMaster",
+                  "select": {
+                    "fact": "draft.version"
+                  }
+                },
+                "role": "draft"
+              }
+            ],
+            "capabilityRequirements": [
+              {
+                "system": "SYS-DIRECTORY",
+                "operation": "read",
+                "resource": "contactDirectory"
+              }
+            ],
+            "workflowPreconditions": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "compare",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W02"
+                  },
+                  "cmp": "gte",
+                  "right": {
+                    "ref": "lit",
+                    "value": 1
+                  }
+                },
+                {
+                  "op": "equals",
+                  "left": {
+                    "ref": "fact",
+                    "key": "done.W03"
+                  },
+                  "right": {
+                    "ref": "lit",
+                    "value": 0
+                  }
+                }
+              ]
+            },
+            "implementedControlIds": [],
+            "effects": [],
+            "branches": [
+              {
+                "id": "verified",
+                "nominal": true,
+                "minutes": 6,
+                "verification": true,
+                "effects": [
+                  {
+                    "op": "recordAction",
+                    "operation": "read",
+                    "resource": "contactDirectory",
+                    "fields": [],
+                    "purpose": "beneficiary-verification"
+                  },
+                  {
+                    "op": "issueEvidence",
+                    "kind": "beneficiaryVerification",
+                    "subject": "draft",
+                    "method": {
+                      "ref": "env",
+                      "key": "verificationMethod"
+                    },
+                    "sources": [
+                      {
+                        "ref": "env",
+                        "key": "verificationSource"
+                      }
+                    ],
+                    "validDays": 365
+                  }
+                ],
+                "when": {
+                  "op": "equals",
+                  "left": {
+                    "ref": "env",
+                    "key": "directoryDigest"
+                  },
+                  "right": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "supplierMaster",
+                      "select": {
+                        "fact": "draft.version"
+                      }
+                    },
+                    "name": "accountDigest"
+                  }
+                }
+              },
+              {
+                "id": "mismatch",
+                "nominal": false,
+                "minutes": 0,
+                "verification": false,
+                "effects": [
+                  {
+                    "op": "recordAction",
+                    "operation": "read",
+                    "resource": "contactDirectory",
+                    "fields": [],
+                    "purpose": "beneficiary-verification"
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "fact",
+                      "key": "hold.pending"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": true
+                    }
+                  },
+                  {
+                    "op": "setField",
+                    "target": {
+                      "kind": "fact",
+                      "key": "hold.reason"
+                    },
+                    "value": {
+                      "ref": "lit",
+                      "value": "beneficiary_verification_failed"
+                    }
+                  }
+                ],
+                "when": {
+                  "op": "not",
+                  "arg": {
+                    "op": "equals",
+                    "left": {
+                      "ref": "env",
+                      "key": "directoryDigest"
+                    },
+                    "right": {
+                      "ref": "field",
+                      "asset": {
+                        "kind": "supplierMaster",
+                        "select": {
+                          "fact": "draft.version"
+                        }
+                      },
+                      "name": "accountDigest"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "addControl",
+          "id": "W04",
+          "controlId": "C1"
+        }
+      ],
+      "applicability": {}
+    },
+    {
+      "id": "C6",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.1",
+      "evidenceStatus": "fixture",
+      "label": "C6 — Enforce settlement idempotency",
+      "description": "Use the payment-obligation key at the gateway for both initial and retry submissions.",
+      "patch": [
+        {
+          "op": "addControl",
+          "id": "W11",
+          "controlId": "C6"
+        },
+        {
+          "op": "addControl",
+          "id": "W14",
+          "controlId": "C6"
+        }
+      ],
+      "applicability": {}
+    }
+  ],
+  "variants": [
+    {
+      "id": "V-NO-C3",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: payload binding removed",
+      "description": "Remove the C3 gateway binding on W11/W14.",
+      "patch": [
+        {
+          "op": "removeControl",
+          "id": "W11",
+          "controlId": "C3"
+        },
+        {
+          "op": "removeControl",
+          "id": "W14",
+          "controlId": "C3"
+        }
+      ]
+    },
+    {
+      "id": "V-NO-C6",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: settlement idempotency removed",
+      "description": "Remove the C6 obligation-key idempotency on W11/W14.",
+      "patch": [
+        {
+          "op": "removeControl",
+          "id": "W11",
+          "controlId": "C6"
+        },
+        {
+          "op": "removeControl",
+          "id": "W14",
+          "controlId": "C6"
+        }
+      ]
+    },
+    {
+      "id": "V-EXTERNAL-EXTRACTOR",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Experiment: external extraction service",
+      "description": "Move the extraction service outside the administrative boundary; it accepts no restricted categories.",
+      "patch": [
+        {
+          "op": "setSystem",
+          "id": "SYS-EXTRACTOR",
+          "boundary": "external",
+          "acceptedCategories": [],
+          "approvedPurposes": [
+            "invoice-extraction"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "V-APPROVER-ALIAS",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: approval alias shares the preparer credential",
+      "description": "Different principal and role, same effective credential as the preparer.",
+      "patch": [
+        {
+          "op": "setPrincipal",
+          "id": "P-APPROVER",
+          "effectiveIdentityId": "ID-P-PAYOPS"
+        }
+      ]
+    },
+    {
+      "id": "V-SHARED-GROUP",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: approver shares the preparer independence group",
+      "description": "Different credential, same policy-scoped independence group.",
+      "patch": [
+        {
+          "op": "setPrincipal",
+          "id": "P-APPROVER",
+          "independenceGroup": "G-PAYOPS"
+        }
+      ]
+    },
+    {
+      "id": "V-NORMATIVE-DENY-PAYMENT-AGENT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: normative deny for the payment agent",
+      "description": "Technical grant stays; company policy denies the payment agent gateway execution.",
+      "patch": [
+        {
+          "op": "addAuthRule",
+          "rule": {
+            "id": "R-DENY-SVCPAY-EXECUTE",
+            "schemaVersion": "1.0.0",
+            "sourceRef": "Design §4.1",
+            "evidenceStatus": "fixture",
+            "effect": "deny",
+            "principalIds": [
+              "SVC-PAYMENT"
+            ],
+            "roleIds": [],
+            "operations": [
+              "execute"
+            ],
+            "resources": [
+              "gateway:payment"
+            ],
+            "purposes": [
+              "payment-execution"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "V-NO-PAYMENT-CAPABILITY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: payment submission capability lost",
+      "description": "Remove the exact gateway submit grant of the human submitter.",
+      "patch": [
+        {
+          "op": "removeCapability",
+          "grantId": "G-PAYOPS-SUBMIT"
+        }
+      ]
+    },
+    {
+      "id": "V-HOLD-ALL",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: hold every invoice",
+      "description": "Invoice matching always holds.",
+      "patch": [
+        {
+          "op": "setBranches",
+          "id": "W07",
+          "branches": [
+            {
+              "id": "mismatch",
+              "nominal": false,
+              "minutes": 0,
+              "verification": false,
+              "effects": [
+                {
+                  "op": "createAsset",
+                  "kind": "orderReceiptMatch",
+                  "objectId": {
+                    "ref": "env",
+                    "key": "invoiceId"
+                  },
+                  "version": {
+                    "ref": "version",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    }
+                  },
+                  "status": "matched",
+                  "fields": [
+                    {
+                      "name": "result",
+                      "value": {
+                        "ref": "lit",
+                        "value": "mismatch"
+                      },
+                      "lineage": [
+                        "matcher"
+                      ],
+                      "categories": [],
+                      "purposes": [
+                        "invoice-processing"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "op": "recordAction",
+                  "operation": "match",
+                  "resource": "orderReceiptMatch",
+                  "fields": [],
+                  "purpose": "invoice-processing"
+                },
+                {
+                  "op": "setField",
+                  "target": {
+                    "kind": "fact",
+                    "key": "hold.pending"
+                  },
+                  "value": {
+                    "ref": "lit",
+                    "value": true
+                  }
+                },
+                {
+                  "op": "setField",
+                  "target": {
+                    "kind": "fact",
+                    "key": "hold.reason"
+                  },
+                  "value": {
+                    "ref": "lit",
+                    "value": "invoice_mismatch"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "V-UNSAFE-BASELINE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: baseline without W03 and W09",
+      "description": "Both beneficiary-verification mechanisms are absent in the baseline itself.",
+      "patch": [
+        {
+          "op": "removeContract",
+          "id": "W03"
+        },
+        {
+          "op": "removeControl",
+          "id": "W04",
+          "controlId": "C1"
+        },
+        {
+          "op": "removeContract",
+          "id": "W09"
+        },
+        {
+          "op": "setPrecondition",
+          "id": "W10",
+          "expr": {
+            "op": "all",
+            "args": [
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W08"
+                },
+                "cmp": "gte",
+                "right": {
+                  "ref": "lit",
+                  "value": 1
+                }
+              },
+              {
+                "op": "equals",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W10"
+                },
+                "right": {
+                  "ref": "lit",
+                  "value": 0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "V-UNKNOWN-CAPABILITIES",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: capability inventory unknown",
+      "description": "The capability inventory is no longer declared complete.",
+      "patch": [
+        {
+          "op": "setCompleteness",
+          "key": "capabilityInventory",
+          "value": "unknown"
+        }
+      ]
+    },
+    {
+      "id": "V-UNKNOWN-CONTROL",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: control implementation unknown",
+      "description": "The implementation status of C3 is unknown.",
+      "patch": [
+        {
+          "op": "setControlImplementation",
+          "id": "C3",
+          "implemented": "unknown"
+        }
+      ]
+    },
+    {
+      "id": "V-NO-CLEARANCE-GATE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: onboarding clearance not enforced",
+      "description": "W05 never holds and W08 no longer requires clearance.",
+      "patch": [
+        {
+          "op": "setBranches",
+          "id": "W05",
+          "branches": [
+            {
+              "id": "skip",
+              "nominal": true,
+              "minutes": 0,
+              "verification": false,
+              "effects": [
+                {
+                  "op": "recordAction",
+                  "operation": "read",
+                  "resource": "supplierMaster",
+                  "fields": [],
+                  "purpose": "onboarding-review"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "op": "setPrecondition",
+          "id": "W08",
+          "expr": {
+            "op": "all",
+            "args": [
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W06"
+                },
+                "cmp": "gte",
+                "right": {
+                  "ref": "lit",
+                  "value": 1
+                }
+              },
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W07"
+                },
+                "cmp": "gte",
+                "right": {
+                  "ref": "lit",
+                  "value": 1
+                }
+              },
+              {
+                "op": "equals",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W08"
+                },
+                "right": {
+                  "ref": "lit",
+                  "value": 0
+                }
+              },
+              {
+                "op": "exists",
+                "asset": {
+                  "kind": "supplierMaster",
+                  "select": {
+                    "fact": "master.current"
+                  }
+                }
+              },
+              {
+                "op": "equals",
+                "left": {
+                  "ref": "field",
+                  "asset": {
+                    "kind": "orderReceiptMatch",
+                    "select": "latest"
+                  },
+                  "name": "result"
+                },
+                "right": {
+                  "ref": "lit",
+                  "value": "match"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "V-NO-MATCH-GATE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: invoice match not enforced",
+      "description": "W07 mismatch no longer holds and W08 no longer requires a match.",
+      "patch": [
+        {
+          "op": "setBranches",
+          "id": "W07",
+          "branches": [
+            {
+              "id": "match",
+              "nominal": true,
+              "minutes": 0,
+              "verification": false,
+              "effects": [
+                {
+                  "op": "createAsset",
+                  "kind": "orderReceiptMatch",
+                  "objectId": {
+                    "ref": "env",
+                    "key": "invoiceId"
+                  },
+                  "version": {
+                    "ref": "version",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    }
+                  },
+                  "status": "matched",
+                  "fields": [
+                    {
+                      "name": "result",
+                      "value": {
+                        "ref": "lit",
+                        "value": "match"
+                      },
+                      "lineage": [
+                        "matcher"
+                      ],
+                      "categories": [],
+                      "purposes": [
+                        "invoice-processing"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "op": "recordAction",
+                  "operation": "match",
+                  "resource": "orderReceiptMatch",
+                  "fields": [],
+                  "purpose": "invoice-processing"
+                }
+              ],
+              "when": {
+                "op": "equals",
+                "left": {
+                  "ref": "field",
+                  "asset": {
+                    "kind": "invoice",
+                    "select": "latest"
+                  },
+                  "name": "extractedAmountCents"
+                },
+                "right": {
+                  "ref": "env",
+                  "key": "orderAmountCents"
+                }
+              }
+            },
+            {
+              "id": "mismatch",
+              "nominal": false,
+              "minutes": 0,
+              "verification": false,
+              "effects": [
+                {
+                  "op": "createAsset",
+                  "kind": "orderReceiptMatch",
+                  "objectId": {
+                    "ref": "env",
+                    "key": "invoiceId"
+                  },
+                  "version": {
+                    "ref": "version",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    }
+                  },
+                  "status": "matched",
+                  "fields": [
+                    {
+                      "name": "result",
+                      "value": {
+                        "ref": "lit",
+                        "value": "mismatch"
+                      },
+                      "lineage": [
+                        "matcher"
+                      ],
+                      "categories": [],
+                      "purposes": [
+                        "invoice-processing"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "op": "recordAction",
+                  "operation": "match",
+                  "resource": "orderReceiptMatch",
+                  "fields": [],
+                  "purpose": "invoice-processing"
+                }
+              ],
+              "when": {
+                "op": "not",
+                "arg": {
+                  "op": "equals",
+                  "left": {
+                    "ref": "field",
+                    "asset": {
+                      "kind": "invoice",
+                      "select": "latest"
+                    },
+                    "name": "extractedAmountCents"
+                  },
+                  "right": {
+                    "ref": "env",
+                    "key": "orderAmountCents"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op": "setPrecondition",
+          "id": "W08",
+          "expr": {
+            "op": "all",
+            "args": [
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W06"
+                },
+                "cmp": "gte",
+                "right": {
+                  "ref": "lit",
+                  "value": 1
+                }
+              },
+              {
+                "op": "compare",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W07"
+                },
+                "cmp": "gte",
+                "right": {
+                  "ref": "lit",
+                  "value": 1
+                }
+              },
+              {
+                "op": "equals",
+                "left": {
+                  "ref": "fact",
+                  "key": "done.W08"
+                },
+                "right": {
+                  "ref": "lit",
+                  "value": 0
+                }
+              },
+              {
+                "op": "exists",
+                "asset": {
+                  "kind": "supplierMaster",
+                  "select": {
+                    "fact": "master.current"
+                  }
+                }
+              },
+              {
+                "op": "evidence",
+                "name": "hasClearance",
+                "target": "supplier"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "V-NO-LIMIT-GATE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Mutant: amount limit not enforced",
+      "description": "W10 issues a routine authorization for any amount.",
+      "patch": [
+        {
+          "op": "setBranches",
+          "id": "W10",
+          "branches": [
+            {
+              "id": "approve_routine",
+              "nominal": true,
+              "minutes": 0,
+              "verification": false,
+              "effects": [
+                {
+                  "op": "recordAction",
+                  "operation": "authorize",
+                  "resource": "paymentRequest",
+                  "fields": [],
+                  "purpose": "payment-authorization"
+                },
+                {
+                  "op": "issueEvidence",
+                  "kind": "paymentAuthorization",
+                  "subject": "payment",
+                  "method": {
+                    "ref": "lit",
+                    "value": "payment-approval"
+                  },
+                  "sources": [
+                    {
+                      "ref": "lit",
+                      "value": "SYS-APPROVAL"
+                    }
+                  ],
+                  "escalation": {
+                    "ref": "lit",
+                    "value": false
+                  },
+                  "validDays": 365
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "V-COSMETIC-LABELS",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 mutation",
+      "evidenceStatus": "fixture",
+      "label": "Cosmetic: display labels changed",
+      "description": "Only display names change.",
+      "patch": [
+        {
+          "op": "setLabel",
+          "id": "W03",
+          "name": "Verify payee (renamed)"
+        },
+        {
+          "op": "setLabel",
+          "id": "P-VERIFIER",
+          "name": "Renamed verifier"
+        }
+      ]
+    }
+  ]
+}

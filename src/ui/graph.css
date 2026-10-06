@@ -1,0 +1,630 @@
+/* Canvas, nodes, edges, legend and inspector. Shared variables and global classes come from styles.css. */
+
+/* ---------- canvas shell ---------- */
+.wf-canvas {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 420px;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.wf-canvas__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px 20px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.wf-overlays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.wf-overlays legend {
+  padding: 0;
+  margin-bottom: 2px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.wf-overlays__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.wf-legend__title {
+  margin: 0 0 2px;
+  font-size: 13px;
+  color: var(--navy);
+}
+
+.wf-legend__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-legend__list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wf-legend__sample {
+  flex: none;
+}
+
+.wf-legend__line {
+  fill: none;
+  stroke-width: 2.4;
+}
+
+.wf-legend__line--dependency {
+  stroke: var(--navy);
+}
+
+.wf-legend__line--data {
+  stroke: var(--teal);
+  stroke-dasharray: 8 5;
+}
+
+.wf-legend__line--authority {
+  stroke: var(--amber);
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+}
+
+.wf-canvas__focus {
+  flex: 1 1 100%;
+  margin: 0;
+  color: var(--muted);
+}
+
+.wf-canvas__design {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
+/* ---------- automation impact legend ---------- */
+.wf-autos {
+  flex: 1 1 100%;
+}
+
+.wf-autos__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-autos__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 8px;
+  flex: 1 1 280px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  cursor: default;
+}
+
+.wf-autos__head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2px 6px;
+  flex: 1 1 100%;
+}
+
+.wf-autos__head .wf-autos__status {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.wf-autos__row:hover,
+.wf-autos__row:focus-visible {
+  border-color: var(--navy);
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.wf-autos__row--on {
+  background: #f5f3ff;
+}
+
+.wf-autos__swatch,
+.check__swatch {
+  display: inline-block;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.wf-autos__status {
+  padding: 0 6px;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.wf-autos__status--on {
+  border-color: var(--green);
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.wf-autos__steps {
+  display: flex;
+  flex: 1 1 100%;
+  flex-direction: column;
+  color: var(--text);
+}
+
+.wf-autos__lane {
+  font-variant-numeric: tabular-nums;
+}
+
+.wf-canvas__viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 340px;
+  background: #f8fafc;
+}
+
+.wf-canvas__viewport > .react-flow {
+  position: absolute;
+  inset: 0;
+}
+
+.wf-canvas__error {
+  margin: 0;
+  padding: 16px;
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* ---------- edges: distinguishable by line style, not colour alone ---------- */
+.wf-edge .react-flow__edge-path {
+  fill: none;
+}
+
+.wf-edge--dependency .react-flow__edge-path {
+  stroke: var(--navy);
+  stroke-width: 1.8;
+}
+
+.wf-edge--data .react-flow__edge-path {
+  stroke: var(--teal);
+  stroke-width: 1.8;
+  stroke-dasharray: 8 5;
+}
+
+.wf-edge--authority .react-flow__edge-path {
+  stroke: var(--amber);
+  stroke-width: 2.4;
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+}
+
+.wf-edge--external .react-flow__edge-path {
+  stroke: var(--red);
+  stroke-width: 3;
+}
+
+.wf-edge .react-flow__edge-text {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text);
+}
+
+.wf-edge .react-flow__edge-textbg {
+  fill: #fff;
+  fill-opacity: 0.92;
+}
+
+/* ---------- handles (present for edge anchoring, never interactive) ---------- */
+.react-flow__handle.graph-handle {
+  width: 2px;
+  height: 2px;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- lanes ---------- */
+.react-flow__node-lane {
+  pointer-events: none;
+}
+
+.graph-lane {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(20, 40, 75, 0.035);
+}
+
+.graph-lane__label {
+  display: block;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+/* ---------- activity nodes ---------- */
+.act-node {
+  width: 210px;
+  min-height: 118px;
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(20, 40, 75, 0.12);
+  font-size: 12px;
+  color: var(--text);
+}
+
+.act-node__button {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  min-height: 114px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: calc(var(--radius) - 2px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.act-node__button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.act-node__head {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.act-node__id {
+  flex: none;
+  font-weight: 800;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.act-node__name {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.act-node__actor {
+  color: var(--muted);
+}
+
+.act-node__tags,
+.act-node__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.act-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 6px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  background: var(--panel);
+}
+
+.act-tag--neutral {
+  color: var(--muted);
+}
+
+.act-tag--info {
+  color: var(--teal);
+}
+
+.act-tag--warn {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.act-tag--bad {
+  color: var(--red);
+  background: var(--red-soft);
+}
+
+.act-chip {
+  padding: 0 6px;
+  border: 1px solid var(--navy);
+  border-radius: 4px;
+  background: #eef2fb;
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 17px;
+}
+
+.act-node__autos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Automation chips: filled when the automation is in the design, dashed outline when it is only a hover preview. */
+.act-auto {
+  padding: 0 6px;
+  border: 2px solid var(--auto-color);
+  border-radius: 4px;
+  background: var(--auto-color);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 16px;
+}
+
+.act-auto--preview {
+  border-style: dashed;
+  background: var(--panel);
+  color: var(--auto-color);
+}
+
+.act-node__removed {
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.act-node--removed {
+  border-style: dashed;
+  background: #eceff4;
+  color: var(--muted);
+}
+
+.act-node--impacted {
+  border-left-width: 7px;
+  border-left-color: var(--auto-color);
+}
+
+.act-node--preview {
+  border-color: var(--auto-color);
+  border-style: dashed;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--auto-color) 30%, transparent);
+}
+
+.act-node--selected {
+  border-color: var(--teal);
+  outline: 3px double var(--teal);
+  outline-offset: 2px;
+}
+
+.act-node--witness {
+  border-left-width: 7px;
+  border-left-color: var(--navy);
+}
+
+.act-node--focus {
+  border-color: var(--red);
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+
+.act-node--dimmed {
+  opacity: 0.55;
+}
+
+/* ---------- finding notes and system nodes ---------- */
+.graph-note {
+  width: 220px;
+  max-height: 96px;
+  overflow: auto;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--teal);
+  border-radius: 6px;
+  background: var(--panel);
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.graph-note--bad {
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+
+.graph-note:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.graph-note__title {
+  display: block;
+  color: var(--navy);
+}
+
+.graph-note__lines {
+  margin: 2px 0 0;
+  padding-left: 14px;
+  overflow-wrap: anywhere;
+}
+
+.graph-system {
+  display: flex;
+  flex-direction: column;
+  width: 190px;
+  padding: 6px 8px;
+  border: 2px dashed var(--teal);
+  border-radius: 6px;
+  background: var(--panel);
+  font-size: 12px;
+}
+
+.graph-system--external {
+  border-style: double;
+  border-width: 4px;
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+
+.graph-system__boundary {
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.graph-system__name {
+  font-weight: 600;
+}
+
+/* ---------- inspector ---------- */
+.inspector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-width: 0;
+  overflow: auto;
+  padding: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.inspector__title {
+  margin: 0;
+  font-size: 16px;
+  color: var(--navy);
+}
+
+.inspector__lead {
+  margin: 0;
+  font-size: 14px;
+}
+
+.inspector__section {
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.inspector__heading {
+  margin: 0 0 4px;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--navy);
+}
+
+.inspector__rows {
+  margin: 0;
+}
+
+.inspector__row {
+  display: grid;
+  grid-template-columns: minmax(6rem, 34%) 1fr;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px solid #eef1f6;
+}
+
+.inspector__row dt {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.inspector__row dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.inspector__list {
+  margin: 2px 0 6px;
+  padding-left: 18px;
+  overflow-wrap: anywhere;
+}
+
+.inspector__list li + li {
+  margin-top: 4px;
+}
+
+.inspector__code {
+  display: block;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: #f1f4f9;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.inspector__notice {
+  margin: 0;
+  padding: 6px 8px;
+  border-left: 4px solid var(--amber);
+  background: var(--amber-soft);
+  color: var(--text);
+}
+
+.inspector__subsection {
+  margin-top: 6px;
+}
+
+.inspector__details {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.inspector__details > summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.inspector__details > summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.inspector__catalog {
+  margin-top: auto;
+}

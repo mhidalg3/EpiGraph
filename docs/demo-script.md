@@ -1,0 +1,7 @@
+# Five-minute demonstration
+
+1. **Baseline.** Press *Analyze* with no automations. Coverage complete, all policies satisfied in the model, goals satisfied. Select W03 and W09 to see the two beneficiary-verification mechanisms; inspect a transfer's payload and purpose.
+2. **Individually safe.** Tick the A2 checkbox under *Automations* (not the *Compare against* dropdown, which only picks the reference for comparison), Analyze; then A3 alone. Each remains acceptable: A2 keeps manual W09, A3 keeps baseline W03. Hover each automation to see the steps it changes highlighted on the graph.
+3. **Hazard.** Tick both A2 and A3. The coloured A2/A3 chips show W03 and W09 removed. Analyze: P01 is violated. Select the finding: the witness runs from the supplier claim through A2's commit and W10's independent approval to A3's submission; press *Replay witness*. W10 approves the exact amount/payload, not the beneficiary.
+4. **Repair.** Open *Composition* → *Run composition* (`{A2, A3}` is the inclusion-minimal enabling set). Open *Repairs* → *Run synthesis*; compare C1, C2, C5. Apply C2 (re-analysis: valid change reconciles once, invalid change is held).
+5. **Sensitivity.** Change the review budget or supplier-event mix and re-run synthesis: the preferred feasible design changes without changing policy semantics. Open *Assumptions* for the finite-scope statement and the report preview; export JSON/Markdown.

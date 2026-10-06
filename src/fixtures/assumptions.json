@@ -1,0 +1,167 @@
+{
+  "economics": {
+    "id": "ECON",
+    "schemaVersion": "1.0.0",
+    "sourceRef": "Design §7.6",
+    "evidenceStatus": "assumed",
+    "monthly": {
+      "invoices": 1000,
+      "supplierEvents": 100,
+      "paidSupplierEvents": 60
+    },
+    "humanHourValueUsd": 60,
+    "reviewCapacityHours": 16,
+    "amortizationMonths": 12,
+    "platform": {
+      "recurringUsd": 700,
+      "setupUsd": 3600
+    },
+    "controlCosts": {
+      "C1": {
+        "recurringUsd": 40,
+        "setupUsd": 0
+      },
+      "C2": {
+        "recurringUsd": 80,
+        "setupUsd": 0
+      },
+      "C3": {
+        "recurringUsd": 0,
+        "setupUsd": 0
+      },
+      "C4": {
+        "recurringUsd": 0,
+        "setupUsd": 0
+      },
+      "C5": {
+        "recurringUsd": 0,
+        "setupUsd": 0
+      },
+      "C6": {
+        "recurringUsd": 0,
+        "setupUsd": 0
+      }
+    },
+    "classes": [
+      {
+        "id": "routineInvoice",
+        "label": "Routine invoices (existing verified supplier)",
+        "caseId": "CASE-ROUTINE",
+        "routeActivities": [
+          "W06",
+          "W07",
+          "W08",
+          "W09",
+          "W10",
+          "W11",
+          "W12"
+        ]
+      },
+      {
+        "id": "supplierEventPaid",
+        "label": "Supplier events leading to payment",
+        "caseId": "CASE-NEW-VALID",
+        "routeActivities": [
+          "W01",
+          "W02",
+          "W03",
+          "W04",
+          "W05",
+          "W06",
+          "W07",
+          "W08",
+          "W09",
+          "W10",
+          "W11",
+          "W12"
+        ]
+      },
+      {
+        "id": "supplierEventUnpaid",
+        "label": "Supplier events without payment",
+        "caseId": "CASE-SUPPLIER-ONLY",
+        "routeActivities": [
+          "W01",
+          "W02",
+          "W03",
+          "W04",
+          "W05"
+        ]
+      }
+    ]
+  },
+  "assumptions": [
+    {
+      "id": "AS-SCOPE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "fixture",
+      "category": "scope",
+      "text": "Fictional finite-model demonstration: Northstar, its principals, identifiers, digests and policies are stipulated, not real data and not legal obligations."
+    },
+    {
+      "id": "AS-LIMIT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "fixture",
+      "category": "modeling",
+      "text": "The USD 10,000.00 routine payment limit is a fixture parameter; currency is USD only and amounts are integer cents."
+    },
+    {
+      "id": "AS-MATCHER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "assumed",
+      "category": "modeling",
+      "text": "The deterministic matcher is operated through the invoice clerk principal; no extra service principal is modeled for it."
+    },
+    {
+      "id": "AS-ECON-PLATFORM",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "assumed",
+      "category": "economic",
+      "text": "Platform cost is platform-wide: USD 700/month plus USD 3,600 setup amortized over 12 months whenever any automation is requested; no per-automation allocation is invented."
+    },
+    {
+      "id": "AS-ECON-CONTROLS",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "assumed",
+      "category": "economic",
+      "text": "Incremental recurring cost: C1 USD 40, C2 USD 80, C5 none; C3/C4/C6 zero in these synthetic fixtures; additional repair setup defaults to zero."
+    },
+    {
+      "id": "AS-ECON-MINUTES",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "assumed",
+      "category": "economic",
+      "text": "Human minutes are stipulated per activity branch (W02 1, W03 6, W04 1, W06 5, W08 3, W11 1, verification 6); unvaried activities are charged zero. Savings are disjoint stipulated reductions, not measurements."
+    },
+    {
+      "id": "AS-ECON-CAPACITY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "assumed",
+      "category": "economic",
+      "text": "Capacity-equivalent value is not guaranteed cash savings; the 16-hour review budget is an editable synthetic default (the supplied eight-hour scenario is reproducible by editing it)."
+    },
+    {
+      "id": "AS-ROUTE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "assumed",
+      "category": "economic",
+      "text": "Economic classes use one declared nominal valid route each (correct extraction, successful acknowledgement, no adversarial ordering); path counts are not business frequencies."
+    },
+    {
+      "id": "AS-RISK",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan assumptions",
+      "evidenceStatus": "fixture",
+      "category": "assurance",
+      "text": "Reachability is a possibility statement, not a probability; no risk score is produced."
+    }
+  ]
+}

@@ -1,0 +1,5266 @@
+{
+  "suites": [
+    {
+      "id": "flagship",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10",
+      "evidenceStatus": "fixture",
+      "label": "Flagship",
+      "description": "Routine invoice, legitimate new supplier, and invalid bank-detail change.",
+      "caseIds": [
+        "CASE-ROUTINE",
+        "CASE-NEW-VALID",
+        "CASE-CHANGE-INVALID"
+      ]
+    },
+    {
+      "id": "stale-approval",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1",
+      "evidenceStatus": "fixture",
+      "label": "Stale approval",
+      "description": "One bounded supplier bank-version update interleaved with payment preparation, approval and submission.",
+      "caseIds": [
+        "CASE-STALE-UPDATE"
+      ]
+    },
+    {
+      "id": "external-transfer",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10",
+      "evidenceStatus": "fixture",
+      "label": "External transfer",
+      "description": "Extraction with raw restricted fields and with a restricted-derived summary (requires A1).",
+      "caseIds": [
+        "CASE-EXT-RAW",
+        "CASE-EXT-SUMMARY"
+      ]
+    },
+    {
+      "id": "uncertain-retry",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10",
+      "evidenceStatus": "fixture",
+      "label": "Uncertain retry",
+      "description": "Settled-but-acknowledgement-uncertain payment and one retry.",
+      "caseIds": [
+        "CASE-RETRY-UNCERTAIN"
+      ]
+    },
+    {
+      "id": "assurance-boundaries",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10",
+      "evidenceStatus": "fixture",
+      "label": "Assurance boundaries",
+      "description": "Clearance, match, extraction-mismatch, limit boundaries, and defective initial evidence.",
+      "caseIds": [
+        "CASE-UNCLEARED",
+        "CASE-INVOICE-MISMATCH",
+        "CASE-EXTRACTION-MISMATCH",
+        "CASE-LIMIT-EXACT",
+        "CASE-LIMIT-OVER",
+        "CASE-LIMIT-OVER-ESCALATED",
+        "CASE-EXPIRED-EVIDENCE",
+        "CASE-WRONG-DIGEST-EVIDENCE",
+        "CASE-WRONG-VERSION-EVIDENCE",
+        "CASE-WRONG-CASE-EVIDENCE",
+        "CASE-WRONG-SUPPLIER-EVIDENCE",
+        "CASE-UNTRUSTED-EVIDENCE"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "CASE-ROUTINE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 baseline routine",
+      "evidenceStatus": "fixture",
+      "label": "Routine invoice, existing verified supplier",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-ROUTINE",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-ROUTINE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "flagship"
+      ],
+      "economicClass": "routineInvoice",
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-NEW-VALID",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.2 legitimate change",
+      "evidenceStatus": "fixture",
+      "label": "New supplier with legitimate bank details, then payment",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": true,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D1",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {},
+      "initialAssets": [
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "flagship"
+      ],
+      "economicClass": "supplierEventPaid",
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-CHANGE-INVALID",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.2 invalid change",
+      "evidenceStatus": "fixture",
+      "label": "Supplier change with unverifiable (forged) bank details",
+      "legitimate": false,
+      "requiredOutcome": {
+        "kind": "held",
+        "reason": "beneficiary_verification_failed"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": true,
+        "hasInvoice": true,
+        "claimDigest": "D9",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D1",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {},
+      "initialAssets": [
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "flagship"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-SUPPLIER-ONLY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §7.6 supplier events without payment",
+      "evidenceStatus": "fixture",
+      "label": "Supplier event without payment (economic route only)",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "supplier_committed"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": true,
+        "hasInvoice": false,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D1",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {},
+      "initialAssets": [],
+      "initialEvidence": [],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [],
+      "economicClass": "supplierEventUnpaid",
+      "economicOnly": true
+    },
+    {
+      "id": "CASE-STALE-UPDATE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §2.1 stale-approval fixture",
+      "evidenceStatus": "fixture",
+      "label": "Bounded bank-version update around preparation/approval",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": true,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D1",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-STALE-UPDATE",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-STALE-UPDATE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "stale-approval"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-EXT-RAW",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 raw restricted fields",
+      "evidenceStatus": "fixture",
+      "label": "Raw invoice document with bank/tax fields sent to the extractor",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-EXT-RAW",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-EXT-RAW",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [
+        "A1"
+      ],
+      "suiteIds": [
+        "external-transfer"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-EXT-SUMMARY",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 summary is not declassification",
+      "evidenceStatus": "fixture",
+      "label": "Summary derived from restricted fields sent to the extractor",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-EXT-SUMMARY",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-EXT-SUMMARY",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct_via_summary"
+        ]
+      },
+      "requiresAutomations": [
+        "A1"
+      ],
+      "suiteIds": [
+        "external-transfer"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-RETRY-UNCERTAIN",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 retry without idempotency",
+      "evidenceStatus": "fixture",
+      "label": "Settled payment with uncertain acknowledgement, one retry",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-RETRY-UNCERTAIN",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-RETRY-UNCERTAIN",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok",
+          "ack_uncertain"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "uncertain-retry"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-UNCLEARED",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2 P05",
+      "evidenceStatus": "fixture",
+      "label": "New supplier not cleared for onboarding",
+      "legitimate": false,
+      "requiredOutcome": {
+        "kind": "held",
+        "reason": "onboarding_not_cleared"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": true,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D1",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": false,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {},
+      "initialAssets": [
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-INVOICE-MISMATCH",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2 P05",
+      "evidenceStatus": "fixture",
+      "label": "Invoice does not match order/receipt",
+      "legitimate": false,
+      "requiredOutcome": {
+        "kind": "held",
+        "reason": "invoice_mismatch"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 400000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-INVOICE-MISMATCH",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-INVOICE-MISMATCH",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-EXTRACTION-MISMATCH",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Plan §3 extraction-mismatch",
+      "evidenceStatus": "fixture",
+      "label": "Extractor produces a mismatched claim (declared exception case)",
+      "legitimate": false,
+      "requiredOutcome": {
+        "kind": "held",
+        "reason": "invoice_mismatch"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-EXTRACTION-MISMATCH",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-EXTRACTION-MISMATCH",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_mismatch"
+        ]
+      },
+      "requiresAutomations": [
+        "A1"
+      ],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-LIMIT-EXACT",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2 limit boundary",
+      "evidenceStatus": "fixture",
+      "label": "Invoice of exactly USD 10,000.00 (routine)",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 1000000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 1000000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-LIMIT-EXACT",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-LIMIT-EXACT",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-LIMIT-OVER",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2 limit boundary",
+      "evidenceStatus": "fixture",
+      "label": "Invoice of USD 10,000.01 without escalation",
+      "legitimate": false,
+      "requiredOutcome": {
+        "kind": "held",
+        "reason": "escalation_required"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 1000001,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 1000001,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-LIMIT-OVER",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-LIMIT-OVER",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-LIMIT-OVER-ESCALATED",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.2 limit boundary",
+      "evidenceStatus": "fixture",
+      "label": "Invoice of USD 10,000.01 with admitted escalation",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 1000001,
+        "escalationApproved": true
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 1000001,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-LIMIT-OVER-ESCALATED",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-LIMIT-OVER-ESCALATED",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-EXPIRED-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 expired evidence",
+      "evidenceStatus": "fixture",
+      "label": "Existing supplier whose verification evidence expired",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2026-09-30",
+          "caseScope": "CASE-EXPIRED-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-EXPIRED-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-WRONG-DIGEST-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 wrong digest",
+      "evidenceStatus": "fixture",
+      "label": "Existing supplier whose evidence covers a different account digest",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D8"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-WRONG-DIGEST-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-WRONG-DIGEST-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-WRONG-VERSION-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 old evidence for new version",
+      "evidenceStatus": "fixture",
+      "label": "Existing supplier whose evidence covers an old bank version",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 7,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-WRONG-VERSION-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-WRONG-VERSION-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-WRONG-CASE-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 cross-case evidence",
+      "evidenceStatus": "fixture",
+      "label": "Existing supplier whose evidence belongs to another case",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-OTHER",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-WRONG-CASE-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-WRONG-SUPPLIER-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §10 wrong supplier",
+      "evidenceStatus": "fixture",
+      "label": "Existing supplier whose evidence covers another supplier",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-2",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-trusted-directory",
+          "sources": [
+            "SYS-DIRECTORY"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-WRONG-SUPPLIER-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-WRONG-SUPPLIER-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    },
+    {
+      "id": "CASE-UNTRUSTED-EVIDENCE",
+      "schemaVersion": "1.0.0",
+      "sourceRef": "Design §4.3 untrusted source",
+      "evidenceStatus": "fixture",
+      "label": "Existing supplier whose evidence came from a supplier-supplied callback number",
+      "legitimate": true,
+      "requiredOutcome": {
+        "kind": "reconciled"
+      },
+      "env": {
+        "supplierId": "SUP-1",
+        "supplierChange": false,
+        "hasInvoice": true,
+        "claimDigest": "D1",
+        "claimTaxId": "TAX-FICT-001",
+        "claimName": "Fictional Supplies Ltd",
+        "directoryDigest": "D0",
+        "verificationMethod": "callback-trusted-directory",
+        "verificationSource": "SYS-DIRECTORY",
+        "clearanceOk": true,
+        "invoiceId": "INV-1",
+        "paymentId": "PAY-1",
+        "obligationId": "OBL-INV-1",
+        "orderAmountCents": 420000,
+        "escalationApproved": false
+      },
+      "initialFacts": {
+        "master.current": 0,
+        "bank.next": 1
+      },
+      "initialAssets": [
+        {
+          "kind": "supplierMaster",
+          "objectId": "SUP-1",
+          "version": 0,
+          "status": "committed",
+          "fields": [
+            {
+              "name": "supplierId",
+              "value": "SUP-1",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "accountDigest",
+              "value": "D0",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            },
+            {
+              "name": "taxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "master-record"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "editor",
+              "value": "P-MAINT",
+              "lineage": [
+                "editor"
+              ],
+              "categories": [],
+              "purposes": [
+                "supplier-maintenance",
+                "payment-execution"
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "invoice",
+          "objectId": "INV-1",
+          "version": 1,
+          "status": "received",
+          "fields": [
+            {
+              "name": "invoiceId",
+              "value": "INV-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "supplierRef",
+              "value": "SUP-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "amountCents",
+              "value": 420000,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "currency",
+              "value": "USD",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "lineItems",
+              "value": "LI-1:widgets",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "orderRef",
+              "value": "PO-1",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "matching"
+              ]
+            },
+            {
+              "name": "remitBankAccount",
+              "value": "D-REMIT",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "bank"
+              ],
+              "purposes": [
+                "payment-execution",
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "remitTaxId",
+              "value": "TAX-FICT-001",
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [
+                "tax"
+              ],
+              "purposes": [
+                "supplier-maintenance"
+              ]
+            },
+            {
+              "name": "extractedAmountCents",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "payment-execution",
+                "matching"
+              ]
+            },
+            {
+              "name": "summaryText",
+              "value": null,
+              "lineage": [
+                "invoice-document"
+              ],
+              "categories": [],
+              "purposes": [
+                "invoice-extraction",
+                "payment-execution",
+                "matching"
+              ]
+            }
+          ]
+        }
+      ],
+      "initialEvidence": [
+        {
+          "id": "EV-INIT-BEN-V0",
+          "kind": "beneficiaryVerification",
+          "issuer": "P-VERIFIER",
+          "subject": {
+            "supplierId": "SUP-1",
+            "bankVersion": 0,
+            "accountDigest": "D0"
+          },
+          "method": "callback-supplied-number",
+          "sources": [
+            "SUPPLIER-REQUEST-PHONE"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-UNTRUSTED-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior verification record for the existing master version"
+          }
+        },
+        {
+          "id": "EV-INIT-CLR",
+          "kind": "onboardingClearance",
+          "issuer": "P-CLEARER",
+          "subject": {
+            "supplierId": "SUP-1"
+          },
+          "method": "onboarding-review",
+          "sources": [
+            "SYS-MASTER"
+          ],
+          "validFrom": "2026-01-15",
+          "validUntil": "2027-01-15",
+          "caseScope": "CASE-UNTRUSTED-EVIDENCE",
+          "admission": {
+            "basis": "Fixture: admitted prior onboarding clearance"
+          }
+        }
+      ],
+      "branchDomains": {
+        "W11": [
+          "ack_ok"
+        ],
+        "W14": [
+          "ack_ok"
+        ],
+        "W06": [
+          "extract_correct"
+        ]
+      },
+      "requiresAutomations": [],
+      "suiteIds": [
+        "assurance-boundaries"
+      ],
+      "economicOnly": false
+    }
+  ]
+}
